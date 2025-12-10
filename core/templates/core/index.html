@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="banner">
+    <!-- 🎬 VÍDEO DE FUNDO DO VIMEO -->
+    <div class="banner-video-wrapper">
+        <iframe
+            src="https://player.vimeo.com/video/1145394952?background=1&autoplay=1&muted=1&loop=1&title=0&byline=0&portrait=0"
+            frameborder="0"
+            webkitallowfullscreen
+            mozallowfullscreen
+            allowfullscreen
+            allow="autoplay; fullscreen"
+            class="banner-video"
+        ></iframe>
+    </div>
+
+    <!-- 🔹 Camada translúcida -->
+    <div class="overlay"></div>
+
+    <!-- 🔸 Conteúdo sobre o vídeo -->
+    <div class="container texto-banner">
+        <p class="subtitulo">Acreditamos que</p>
+        <h1>Água é Vida!</h1>
+        <p>Confira nossas soluções personalizadas para tratamento de água.</p>
+        <a href="/sobre/" class="btn">Saiba Mais</a>
+    </div>
+</section>
+
+{% endblock %}

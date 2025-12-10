@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Contato | FCF Químicos{% endblock %}
+
+{% block content %}
+<!-- ===============================
+     BANNER DE CONTATO
+=============================== -->
+<section class="banner-contato" id="banner-contato">
+
+    <!-- VÍDEO DO VIMEO -->
+    <div class="banner-video-wrapper">
+        <iframe
+            src="https://player.vimeo.com/video/1145394952?background=1&autoplay=1&muted=1&loop=1&title=0&byline=0&portrait=0"
+            frameborder="0"
+            webkitallowfullscreen
+            mozallowfullscreen
+            allowfullscreen
+            allow="autoplay; fullscreen"
+            class="banner-video"
+        ></iframe>
+    </div>
+
+    <!-- camada de vidro translúcido -->
+    <div class="overlay-glass">
+        <h1>Contato</h1>
+        <p>Entre em contato conosco — será um prazer atendê-lo.</p>
+    </div>
+
+    <div class="banner-gradient"></div>
+</section>
+
+<!-- ===============================
+     FORMULÁRIO DE CONTATO
+=============================== -->
+<section class="formulario-contato">
+    <div class="container">
+        <h2>Preencha o formulário de contato</h2>
+        <p>Por favor, preencha os campos abaixo e nossa equipe entrará em contato o mais breve possível.</p>
+
+        <form class="form-contato" method="POST">
+            {% csrf_token %}
+            <div class="linha">
+                <input type="text" name="nome" placeholder="Nome completo" required>
+                <input type="email" name="email" placeholder="E-mail" required>
+            </div>
+            <div class="linha">
+                <input type="text" name="empresa" placeholder="Empresa">
+                <input type="text" name="telefone" placeholder="Telefone">
+            </div>
+            <textarea name="mensagem" rows="5" placeholder="Sua mensagem..." required></textarea>
+            <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

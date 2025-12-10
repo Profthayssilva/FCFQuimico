@@ -1,0 +1,116 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Produtos | FCF Químicos{% endblock %}
+
+{% block content %}
+<section class="produtos-fds">
+
+  <section class="banner-produto" id="banner-produto">
+
+      <!-- 🎬 VÍDEO DE FUNDO DO VIMEO -->
+      <div class="banner-video-wrapper">
+          <iframe
+              src="https://player.vimeo.com/video/1145394952?background=1&autoplay=1&muted=1&loop=1&title=0&byline=0&portrait=0"
+              frameborder="0"
+              webkitallowfullscreen
+              mozallowfullscreen
+              allowfullscreen
+              allow="autoplay; fullscreen"
+              class="banner-video"
+          ></iframe>
+      </div>
+
+      <!-- 💎 Camada de vidro translúcido -->
+      <div class="overlay-glass">
+          <h1>Produtos</h1>
+          <p>Conheça nossas soluções químicas e fichas de segurança (FDS).</p>
+      </div>
+
+      <!-- 🌊 Gradiente azul superior integrando o menu -->
+      <div class="banner-gradient"></div>
+
+  </section>
+
+</section>
+
+
+    <div class="container">
+        <h1>Fichas com Dados de Segurança (FDS)</h1>
+        <p>Selecione o(s) produto(s) desejado(s) e preencha o formulário para liberar o download.</p>
+
+        <div class="lista-produtos">
+            <label><input type="checkbox" value="{% static 'core/fds/Hipoclorito_Sodio.pdf' %}"> Hipoclorito de sódio 10-12%</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Hipoclorito_Calcio.pdf' %}"> Hipoclorito de Cálcio 65%, granulado e pastilhas</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Tricloroisocianurato.pdf' %}"> Tricloroisocianurato 90%, granulado e pastilha</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Dicloroisocianurato.pdf' %}"> Dicloroisocianurato de sódio 60%, granulado</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Polimero_Anionico.pdf' %}"> Polímero Aniônico</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Polimero_Cationico.pdf' %}"> Polímero Catiônico</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Sulfato_Aluminio_Isento.pdf' %}"> Sulfato de Alumínio isento de Ferro, sólido e solução líquida</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Sulfato_Aluminio_Ferroso.pdf' %}"> Sulfato de Alumínio Ferroso sólido e solução líquida</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Policloreto_Aluminio.pdf' %}"> Policloreto de Alumínio 10 e 18%</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Hidroxido_Sodio.pdf' %}"> Hidróxido de Sódio, solução 50%</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Peroxido_Hidrogenio.pdf' %}"> Peróxido de hidrogênio 50% (200 volumes)</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Barrilha_Leve.pdf' %}"> Barrilha Leve (Carbonato de Sódio)</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Acido_Fluorsilicico.pdf' %}"> Ácido Fluorsilícico</label>
+            <label><input type="checkbox" value="{% static 'core/fds/Fluossilicato_Sodio.pdf' %}"> Fluossilicato de Sódio</label>
+        </div>
+
+       <hr>
+
+<!-- 🧾 Formulário com o mesmo estilo do Contato -->
+<section class="formulario-produtos">
+  <div class="container">
+    <h2>Preencha o formulário para liberar o download</h2>
+    <p>Após enviar seus dados, o botão de download será habilitado automaticamente.</p>
+
+    <form id="form-fds" method="POST" class="form-produtos">
+      {% csrf_token %}
+      <div class="linha">
+        <input type="text" name="nome" placeholder="Nome completo" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+      </div>
+      <div class="linha">
+        <input type="text" name="empresa" placeholder="Empresa" required>
+        <input type="text" name="telefone" placeholder="Telefone">
+      </div>
+      <button type="submit" class="btn-enviar-produtos">Enviar e liberar download</button>
+    </form>
+
+    <button id="btn-download" class="btn-download" disabled>Fazer Download</button>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('form-fds');
+    const btnDownload = document.getElementById('btn-download');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const response = await fetch("{% url 'enviar_fds_form' %}", { method: "POST", body: formData });
+        if (response.ok) {
+            alert("Formulário enviado! Download liberado.");
+            btnDownload.disabled = false;
+            btnDownload.scrollIntoView({ behavior: "smooth" });
+        } else {
+            alert("Erro ao enviar. Tente novamente.");
+        }
+    });
+
+    btnDownload.addEventListener('click', () => {
+        document.querySelectorAll('input[type=checkbox]:checked').forEach(chk => {
+            const link = document.createElement('a');
+            link.href = chk.value;
+            link.download = chk.value.split('/').pop();
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        });
+    });
+});
+</script>
+{% endblock %}

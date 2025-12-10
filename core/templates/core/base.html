@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FCF Químicos{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+
+<body>
+    <!-- =====================================
+         CABEÇALHO / MENU DE NAVEGAÇÃO
+         ===================================== -->
+    <header class="cabecalho">
+        <div class="logo">
+            <!-- Logo da empresa -->
+            <img src="{% static 'img/logo-fcf.png' %}" alt="Logo FCF">
+            <h1>FCF Químicos</h1>
+        </div>
+
+        <!-- Menu principal -->
+        <nav>
+            <ul>
+                <li>
+                    <a href="{% url 'index' %}" class="{% if request.path == '/' %}active{% endif %}">Início</a>
+                </li>
+                <li>
+                    <a href="{% url 'sobre' %}" class="{% if request.path == '/sobre/' %}active{% endif %}">Sobre Nós</a>
+                </li>
+                <li>
+                    <a href="{% url 'produtos' %}" class="{% if request.path == '/produtos/' %}active{% endif %}">Produtos</a>
+                </li>
+              
+                <li>
+                    <a href="{% url 'contato' %}" class="{% if request.path == '/contato/' %}active{% endif %}">Contato</a>
+                </li>
+                
+                
+            </ul>
+        </nav>
+    </header>
+
+    <!-- =====================================
+         CONTEÚDO PRINCIPAL
+         ===================================== -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- =====================================
+         RODAPÉ COM VÍDEO DE FUNDO
+         ===================================== -->
+    <footer class="footer">
+        <video autoplay muted loop playsinline preload="metadata" class="background-video">
+            <source src="{% static 'core/videos/rodape.mp4' %}" type="video/mp4">
+            Seu navegador não suporta o elemento de vídeo.
+        </video>
+
+        <div class="footer-content">
+            <p>© 2025 FCF Químicos - Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts carregados no final -->
+    <script src="{% static 'core/js/mvv-tabs.js' %}"></script>
+    <script src="{% static 'core/js/banner-shrink.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,908 @@
+/* ==========================================
+   STYLE.CSS — FCF QUÍMICOS
+   Layout moderno e responsivo com base no
+   estilo institucional da Sabará Químicos
+   ========================================== */
+
+/* -----------------------------
+   VARIÁVEIS DE COR E BASE GERAL
+   ----------------------------- */
+:root {
+     --azul-claro: #00B4DB;
+    --azul-escuro: #004D7A;
+   
+    --cinza-claro: #f4f4f4;
+    --branco: #ffffff;
+    --preto: #222;
+}
+
+/* Reset básico e estrutura inicial */
+body {
+    margin: 0;
+    padding-top: 100px; /* Compensa o header fixo */
+    font-family: 'Poppins', sans-serif;
+    color: var(--preto);
+    background-color: var(--branco);
+    line-height: 1.6;
+}
+
+/* Remove margens padrão de títulos e parágrafos */
+h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* ===============================
+   BANNER PRINCIPAL COM VÍDEO DE FUNDO
+   =============================== */
+.banner {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* ocupa a tela inteira */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: white;
+}
+
+/* 🎬 VÍDEO DE FUNDO */
+.banner-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+/* 🔹 EFEITO VIDRO (overlay suave) */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 30, 60, 0.35);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+/* 🔸 TEXTO SOBRE O VÍDEO */
+.texto-banner {
+    position: relative;
+    z-index: 2;
+    padding: 0 80px;
+    max-width: 600px;
+}
+
+.texto-banner .subtitulo {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.texto-banner h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+}
+
+.texto-banner p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background-color: #00B4DB;
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #004D7A;
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   CABEÇALHO TRANSPARENTE + EFEITO SHRINK
+   ========================================== */
+.cabecalho {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent; /* 🔹 Começa totalmente transparente */
+    backdrop-filter: blur(0px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 90px;
+    height: 120px; /* altura inicial */
+    z-index: 1000;
+    transition: all 0.5s ease;
+}
+
+/* Efeito ao rolar — fica branco e encolhe */
+.cabecalho.scrolled {
+    background-color: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(10px);
+    height: 85px; /* encolhe suavemente */
+    padding: 0 70px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* === Logo e texto === */
+.cabecalho .logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cabecalho .logo img {
+    height: 90px;
+    width: auto;
+    transition: transform 0.3s ease, height 0.4s ease;
+}
+
+.cabecalho.scrolled .logo img {
+    height: 70px;
+}
+
+.cabecalho .logo h1 {
+    color: #ffffff; /* branco no topo (quando o fundo é transparente) */
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+    transition: color 0.4s ease;
+}
+
+/* Quando o fundo fica branco, o texto muda de cor */
+.cabecalho.scrolled .logo h1 {
+    color: #004D7A;
+}
+
+/* === Menu principal === */
+.cabecalho nav {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 80px;
+}
+
+.cabecalho nav ul {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cabecalho nav a {
+    text-decoration: none;
+    color: white; /* branco no topo */
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    position: relative;
+}
+
+/* Cor do menu quando o header estiver branco */
+.cabecalho.scrolled nav a {
+    color: #004D7A;
+}
+
+/* Hover e ativo */
+.cabecalho nav a:hover {
+    color: #00B4DB;
+}
+
+.cabecalho nav a.active {
+    color: #00B4DB;
+    border-bottom: 3px solid #00B4DB;
+    padding-bottom: 4px;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+    .cabecalho {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        padding: 15px 40px;
+    }
+
+    .cabecalho nav {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .cabecalho nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .cabecalho .logo img {
+        height: 70px;
+    }
+
+    .cabecalho .logo h1 {
+        font-size: 1.4rem;
+    }
+}
+
+/* ==========================================
+   SEÇÃO DO BANNER PRINCIPAL (HOME)
+   ========================================== */
+/* ==========================================
+   BANNER DE CONTATO - IMAGEM REAL + VIDRO
+   ========================================== */
+/* ==========================================
+   BANNER DE CONTATO - IMAGEM + VIDRO
+   ========================================== */
+
+
+/* ==========================================
+   BANNER DE CONTATO E PRODUTOS — COM EFEITO SHRINK
+   ========================================== */
+
+.banner-contato,
+.banner-produto {
+    position: relative;
+    width: 100%;
+    height: 55vh; /* 🔹 Altura inicial igual à da página Sobre Nós */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.6s ease, transform 0.4s ease;
+    /* background-color: #002b50; */
+}
+/* 🔹 Encaixe suave com o cabeçalho fixo */
+.banner-contato,
+.banner-produto {
+    margin-top: 0px; /* altura do cabeçalho padrão */
+}
+
+.banner-contato.shrink,
+.banner-produto.shrink {
+    margin-top: 85px; /* quando o cabeçalho encolhe */
+}
+
+
+/* 🎬 VÍDEO DE FUNDO */
+.banner-contato .banner-video,
+.banner-produto .banner-video 
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 1;
+}
+
+/* VIDRO CENTRAL COM TEXTO */
+.overlay-glass {
+    position: relative;
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    padding: 60px 50px;
+    border-radius: 20px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.overlay-glass h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+}
+
+.overlay-glass p {
+    font-size: 1.1rem;
+    color: #f4f4f4;
+}
+
+/* 🔹 GRADIENTE SUAVE DO TOPO */
+.banner-contato .banner-gradient,
+.banner-produto .banner-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 60%);
+    z-index: 2;
+}
+
+/* 🔸 EFEITO SHRINK (ao rolar) */
+.banner-contato.shrink,
+.banner-produto.shrink {
+    height: 25vh; /* 🔹 reduz levemente, mas continua visível */
+}
+
+.banner-contato.shrink .overlay-glass,
+.banner-produto.shrink .overlay-glass {
+    transform: scale(0.85);
+    opacity: 0.9;
+}
+
+/* 🔸 Responsivo */
+@media (max-width: 768px) {
+    .banner-contato,
+    .banner-produto {
+        height: 45vh;
+    }
+
+    .banner-contato.shrink,
+    .banner-produto.shrink {
+        height: 20vh;
+    }
+
+    .overlay-glass {
+        padding: 30px 20px;
+    }
+
+    .overlay-glass h1 {
+        font-size: 2rem;
+    }
+
+    .overlay-glass p {
+        font-size: 1rem;
+    }
+}
+
+
+/* ===============================
+   FORMULÁRIO DE CONTATO
+   =============================== */
+.formulario-contato
+{
+    background-color: #f5f9fc;
+    padding: 80px 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.formulario-contato .container {
+    max-width: 900px;
+    margin: auto;
+    background-color: white;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-contato h2 {
+    color: #004D7A;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.formulario-contato p {
+    color: #444;
+    font-size: 1rem;
+    margin-bottom: 40px;
+}
+
+.form-contato {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+
+.linha {
+    display: flex;
+    gap: 20px;
+}
+
+.linha input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+/* Efeito de foco nos inputs */
+.linha input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #00B4DB;
+    box-shadow: 0 0 6px rgba(0, 180, 219, 0.6);
+    transition: 0.2s ease-in-out;
+}
+
+/* Botão com animação */
+.btn-enviar {
+    /* background-color: #00B4DB; */
+    background-color: #004D7A;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0, 180, 219, 0.3);
+}
+
+.btn-enviar:hover {
+    background-color: #00B4DB;
+    transform: scale(1.03);
+    box-shadow: 0 6px 15px rgba(0, 77, 122, 0.4);
+}
+
+/* ==========================================
+   BOTÃO PADRÃO
+   ========================================== */
+.btn {
+    background-color: var(--azul-claro);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: var(--azul-escuro);
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   SEÇÃO "SOBRE NÓS"
+   ========================================== */
+.banner-sobre {
+    position: relative;
+    background: linear-gradient(
+        rgba(0, 77, 122, 0.85),
+        rgba(0, 77, 122, 0.85)
+    );
+    min-height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+    animation: fadeInBanner 1.8s ease-out forwards;
+    opacity: 0;
+}
+
+/* LOGO COMO FUNDO TRANSLÚCIDO */
+.banner-sobre::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: center/70% no-repeat;
+    opacity: 0.12;
+    filter: blur(2px);
+    z-index: 1;
+    animation: fadeInLogo 2.5s ease-in forwards;
+}
+
+/* TEXTO SOBRE O FUNDO */
+.banner-sobre h1 {
+    position: relative;
+    z-index: 2;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    animation: fadeInText 1.8s ease-out 0.5s forwards;
+}
+
+/* ===============================
+   ANIMAÇÕES DE APARIÇÃO
+   =============================== */
+@keyframes fadeInBanner {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLogo {
+    from {
+        opacity: 0;
+        filter: blur(6px);
+    }
+    to {
+        opacity: 0.12;
+        filter: blur(2px);
+    }
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===============================
+   SEÇÃO SOBRE (2 COLUNAS)
+   =============================== */
+.sobre {
+    background-color: #fff;
+    padding: 80px 10%;
+}
+.sobre-flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    
+    gap: 40px;
+}
+.texto-sobre {
+    flex: 1;
+    min-width: 320px;
+    max-width: 55%;
+}
+.texto-sobre h2 {
+    color: #00B4DB;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.texto-sobre h2 span {
+    display: block;
+    color: #004D7A;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: none;
+    margin-top: 5px;
+}
+.texto-sobre p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: #333;
+    text-align: justify;
+}
+.texto-sobre blockquote {
+    font-style: italic;
+    color: #004D7A;
+    border-left: 4px solid #00B4DB;
+    padding-left: 15px;
+    margin: 40px 0;
+}
+
+/* ===============================
+   QUADRO COM AS ABAS (DIREITA)
+   =============================== */
+.mvv-box {
+    flex: 1;
+    min-width: 320px;
+    background-color: #f3f8fb;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    padding: 30px;
+    transition: 0.3s;
+}
+.mvv-box:hover {
+    transform: translateY(-5px);
+}
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.tab-button {
+    flex: 1;
+    text-align: center;
+    background-color: #dbeff5;
+    border: none;
+    color: #004D7A;
+    font-weight: 600;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 5px 5px 0 0;
+}
+.tab-button:hover {
+    background-color: #00B4DB;
+    color: white;
+}
+.tab-button.active {
+    background-color: #004D7A;
+    color: white;
+}
+
+/* conteúdo das abas */
+.tab-content {
+    display: none;
+    text-align: justify;
+    background-color: white;
+    padding: 25px;
+    border-radius: 0 0 5px 5px;
+    font-size: 1rem;
+    color: #333;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+}
+.tab-content.active {
+    display: block;
+}
+
+/* lista de valores */
+.tab-content ul {
+    padding-left: 20px;
+    list-style: disc;
+}
+
+
+/* ==========================================
+   RODAPÉ (FOOTER)
+   ========================================== */
+.footer {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer .background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0.9;
+}
+
+.footer-content {
+    position: relative;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+@media (max-width: 1024px) {
+    .bloco {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .cabecalho {
+        padding: 10px 30px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .banner h1 {
+        font-size: 2rem;
+    }
+
+    .banner p {
+        font-size: 1rem;
+    }
+
+    .bloco {
+        width: 80%;
+    }
+
+    .btn-enviar {
+        width: 80%;
+    }
+}
+
+
+.produtos-fds {
+    /* padding: 80px 10%; */
+    background: #f8fbff;
+    color: #002b5c;
+}
+
+.produtos-fds h1 {
+    font-size: 2.2rem;
+    text-align: center;
+    color: #004D7A;
+    margin-bottom: 20px;
+}
+
+.produtos-fds p {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 40px;
+}
+
+.lista-produtos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas iguais */
+    gap: 25px; /* espaço entre colunas e linhas */
+    max-width: 1200px; /* largura máxima do container */
+    margin: 0 auto 60px auto; /* centraliza o grid na tela */
+    padding: 0 40px; /* respiro lateral */
+    justify-items: stretch; /* 🔹 os itens ocupam toda a largura da célula */
+    align-items: stretch; /* 🔹 altura uniforme */
+}
+
+
+.lista-produtos label {
+    background: #eef5ff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.lista-produtos label:hover {
+    background: #d9ecff;
+}
+
+.linha {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #eef4ff;
+}
+
+.btn-enviar, .btn-download {
+    display: block;
+    margin: 25px auto;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    background:#004D7A;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-enviar:hover, .btn-download:hover {
+    background: #0094b8;
+}
+
+.btn-download[disabled] {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   FORMULÁRIO DE PRODUTOS (ESTILO IGUAL AO DE CONTATO)
+   ========================================== */
+.formulario-produtos {
+    background-color: #f5f9fc;
+    padding: 80px 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.formulario-produtos .container {
+    max-width: 900px;
+    margin: auto;
+    background-color: white;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-produtos h2 {
+    color: #004D7A;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.formulario-produtos p {
+    color: #444;
+    font-size: 1rem;
+    margin-bottom: 40px;
+}
+
+.form-produtos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.linha {
+    display: flex;
+    gap: 20px;
+}
+
+.linha input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.linha input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #00B4DB;
+    box-shadow: 0 0 6px rgba(0, 180, 219, 0.6);
+    transition: 0.2s ease-in-out;
+}
+
+.btn-enviar-produtos {
+    background-color: #004D7A;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0, 180, 219, 0.3);
+}
+
+.btn-enviar-produtos:hover {
+    background-color: #00B4DB;
+    transform: scale(1.03);
+    box-shadow: 0 6px 15px rgba(0, 77, 122, 0.4);
+}
+

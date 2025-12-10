@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Downloads{% endblock %}
+{% block content %}
+<section class="section">
+  <h2>Downloads</h2>
+  <p>Preencha Nome, Cargo, Empresa e Contato para liberar o download.</p>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-banner">Solicitar</button>
+  </form>
+</section>
+{% endblock %}

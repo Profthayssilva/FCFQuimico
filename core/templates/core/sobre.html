@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ===============================
+     BANNER SUPERIOR
+     =============================== -->
+<section class="banner-sobre">
+    {% comment %} <img src="{% static 'img/logo-fcf.png' %}" alt="Logo FCF" class="logo-banner"> {% endcomment %}
+
+      
+        <video autoplay muted loop playsinline preload="auto" class="banner-video">
+        <source src="{% static 'core/videos/banner_sobre.mp4' %}" type="video/mp4">
+        Seu navegador não suporta vídeos em HTML5.
+    </video>
+</section> 
+
+{% comment %} <section class="banner-sobre">
+    <h1>Sobre Nós</h1>
+</section> {% endcomment %}
+
+<!-- ===============================
+     SEÇÃO SOBRE + MISSÃO/VISÃO/VALORES (LADO A LADO)
+     =============================== -->
+<section class="sobre">
+    <div class="container sobre-flex">
+
+        <!-- Coluna esquerda: texto institucional -->
+        <div class="texto-sobre">
+            <h2>// Conheça<br><span>Um Pouco Sobre Nós</span></h2>
+            <p>
+                A empresa <strong>FCF Químicos & Soluções Logísticas</strong> é uma empresa
+                genuinamente goiana, fundada em dezembro de 2018, com compromisso
+                firme de garantir a qualidade, a segurança e a sustentabilidade,
+                trabalhando com a distribuição de produtos químicos voltados ao
+                tratamento e desinfecção de águas.
+            </p>
+            <p>
+                Nosso propósito é garantir que nossos clientes tenham acesso a soluções
+                confiáveis e responsáveis, contribuindo para a preservação dos recursos
+                hídricos e o bem-estar da sociedade.
+            </p>
+
+            <blockquote>
+                “Somos mais que uma distribuidora de produtos químicos —
+                somos parceiros no cuidado com a saúde, a vida e o meio ambiente.”
+            </blockquote>
+        </div>
+
+        <!-- Coluna direita: abas dentro do quadro -->
+        <div class="mvv-box">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="missao">Missão</button>
+                <button class="tab-button" data-tab="visao">Visão</button>
+                <button class="tab-button" data-tab="valores">Valores</button>
+            </div>
+
+            <div class="tab-content active" id="missao">
+                <p>
+                    Fornecer produtos químicos de alta qualidade para o tratamento seguro
+                    e eficiente da água potável, contribuindo para a saúde pública e a
+                    preservação dos recursos hídricos, com responsabilidade ambiental e
+                    excelência no atendimento aos nossos clientes.
+                </p>
+            </div>
+
+            <div class="tab-content" id="visao">
+                <p>
+                    Ser reconhecida como a distribuidora líder em soluções químicas para
+                    o tratamento de água no Brasil, destacando-se pela inovação,
+                    confiabilidade, sustentabilidade e impacto positivo na qualidade de
+                    vida das comunidades atendidas.
+                </p>
+            </div>
+
+            <div class="tab-content" id="valores">
+                <ul>
+                    <li><strong>Compromisso com a vida:</strong> Acreditamos que água tratada e segura é essencial para a saúde e a dignidade humana.</li>
+                    <li><strong>Qualidade e segurança:</strong> Atuamos com rigor técnico, controle de qualidade e responsabilidade em todos os processos.</li>
+                    <li><strong>Sustentabilidade:</strong> Respeitamos o meio ambiente, promovendo práticas e produtos que minimizem impactos ambientais.</li>
+                    <li><strong>Ética e transparência:</strong> Mantemos relações honestas, claras e respeitosas com clientes, parceiros e colaboradores.</li>
+                    <li><strong>Inovação:</strong> Buscamos constantemente novas tecnologias e soluções que agreguem valor e eficiência aos nossos serviços.</li>
+                    <li><strong>Valorização das pessoas:</strong> Investimos em capacitação e bem-estar de nossos colaboradores, pois acreditamos que eles são o nosso maior patrimônio.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
