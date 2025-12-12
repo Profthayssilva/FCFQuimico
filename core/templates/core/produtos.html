@@ -4,94 +4,231 @@
 {% block title %}Produtos | FCF Químicos{% endblock %}
 
 {% block content %}
-<section class="produtos-fds">
 
-  <section class="banner-produto" id="banner-produto">
+<!-- ================================================
+     BANNER COM VÍDEO
+================================================ -->
+<section class="banner-contato" id="banner-contato">
 
-      <!-- 🎬 VÍDEO DE FUNDO DO VIMEO -->
-      <div class="banner-video-wrapper">
-          <iframe
-              src="https://player.vimeo.com/video/1145394952?background=1&autoplay=1&muted=1&loop=1&title=0&byline=0&portrait=0"
-              frameborder="0"
-              webkitallowfullscreen
-              mozallowfullscreen
-              allowfullscreen
-              allow="autoplay; fullscreen"
-              class="banner-video"
-          ></iframe>
-      </div>
+    <div class="banner-video-wrapper">
+        <video class="footer-video" autoplay muted loop playsinline>
+            <source src="{% static 'core/videos/videoContato.mp4' %}" type="video/mp4">
+        </video>
+    </div>
 
-      <!-- 💎 Camada de vidro translúcido -->
-      <div class="overlay-glass">
-          <h1>Produtos</h1>
-          <p>Conheça nossas soluções químicas e fichas de segurança (FDS).</p>
-      </div>
+    <div class="overlay-glass">
+        <h1>Produtos</h1>
+        <p>Conheça nossas soluções químicas e fichas de segurança (FDS).</p>
+    </div>
 
-      <!-- 🌊 Gradiente azul superior integrando o menu -->
-      <div class="banner-gradient"></div>
+    <div class="banner-gradient"></div>
 
-  </section>
-
-</section>
+</section> <!-- 🔥 ESTE É O ÚNICO FECHAMENTO DO BANNER -->
 
 
-    <div class="container">
+<!-- ================================================
+     ÁREA PRINCIPAL
+================================================ -->
+<div class="container">
+
+    <!-- Título + Barra de Busca -->
+    <div class="titulo-e-busca">
+        
         <h1>Fichas com Dados de Segurança (FDS)</h1>
-        <p>Selecione o(s) produto(s) desejado(s) e preencha o formulário para liberar o download.</p>
 
-        <div class="lista-produtos">
-            <label><input type="checkbox" value="{% static 'core/fds/Hipoclorito_Sodio.pdf' %}"> Hipoclorito de sódio 10-12%</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Hipoclorito_Calcio.pdf' %}"> Hipoclorito de Cálcio 65%, granulado e pastilhas</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Tricloroisocianurato.pdf' %}"> Tricloroisocianurato 90%, granulado e pastilha</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Dicloroisocianurato.pdf' %}"> Dicloroisocianurato de sódio 60%, granulado</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Polimero_Anionico.pdf' %}"> Polímero Aniônico</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Polimero_Cationico.pdf' %}"> Polímero Catiônico</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Sulfato_Aluminio_Isento.pdf' %}"> Sulfato de Alumínio isento de Ferro, sólido e solução líquida</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Sulfato_Aluminio_Ferroso.pdf' %}"> Sulfato de Alumínio Ferroso sólido e solução líquida</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Policloreto_Aluminio.pdf' %}"> Policloreto de Alumínio 10 e 18%</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Hidroxido_Sodio.pdf' %}"> Hidróxido de Sódio, solução 50%</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Peroxido_Hidrogenio.pdf' %}"> Peróxido de hidrogênio 50% (200 volumes)</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Barrilha_Leve.pdf' %}"> Barrilha Leve (Carbonato de Sódio)</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Acido_Fluorsilicico.pdf' %}"> Ácido Fluorsilícico</label>
-            <label><input type="checkbox" value="{% static 'core/fds/Fluossilicato_Sodio.pdf' %}"> Fluossilicato de Sódio</label>
+        <div class="busca-wrapper">
+            <span class="icone-lupa"></span>
+            <input type="text" id="busca-produtos" class="campo-busca" placeholder="Pesquisar...">
+            <span class="icone-limpar" id="limpar-busca">✖</span>
+        </div>
+    </div>
+   
+
+    <p>Selecione o(s) produto(s) desejado(s) e preencha o formulário para liberar o download.</p>
+    <br>
+<span> </span>
+<span> </span>
+<br>
+<br>
+    <!-- LISTA DE PRODUTOS -->
+    <div class="lista-produtos">
+
+        {% comment %} ==== PRODUTOS ==== {% endcomment %}
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds002_hipoclorito_sodio.pdf' %}">
+                <strong>Hipoclorito de sódio 10–12%</strong>
+                <p class="descricao">Agente oxidante utilizado em tratamento de água e desinfecção.</p>
+            </label>
         </div>
 
-       <hr>
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds007_hipoclorito_calcio.pdf' %}">
+                <strong>Hipoclorito de cálcio 65%</strong>
+                <p class="descricao">Desinfetante sólido de alta eficiência para água e piscinas.</p>
+            </label>
+        </div>
 
-<!-- 🧾 Formulário com o mesmo estilo do Contato -->
-<section class="formulario-produtos">
-  <div class="container">
-    <h2>Preencha o formulário para liberar o download</h2>
-    <p>Após enviar seus dados, o botão de download será habilitado automaticamente.</p>
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds009_tricloro.pdf' %}">
+                <strong>Tricloroisocianurato 90%</strong>
+                <p class="descricao">Cloro estabilizado em granulado e pastilhas.</p>
+            </label>
+        </div>
 
-    <form id="form-fds" method="POST" class="form-produtos">
-      {% csrf_token %}
-      <div class="linha">
-        <input type="text" name="nome" placeholder="Nome completo" required>
-        <input type="email" name="email" placeholder="E-mail" required>
-      </div>
-      <div class="linha">
-        <input type="text" name="empresa" placeholder="Empresa" required>
-        <input type="text" name="telefone" placeholder="Telefone">
-      </div>
-      <button type="submit" class="btn-enviar-produtos">Enviar e liberar download</button>
-    </form>
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds005_dicloro_consumo_humano.pdf' %}">
+                <strong>Dicloroisocianurato de sódio 60%</strong>
+                <p class="descricao">Cloro rápido ideal para choque e ação imediata.</p>
+            </label>
+        </div>
 
-    <button id="btn-download" class="btn-download" disabled>Fazer Download</button>
-  </div>
-</section>
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds012_polimero_anionico_a4153.pdf' %}">
+                <strong>Polímero Aniônico</strong>
+                <p class="descricao">Auxiliar de floculação para ETAs/ETEs.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds013_polimero_cationico_c9524.pdf' %}">
+                <strong>Polímero Catiônico</strong>
+                <p class="descricao">Coagulante utilizado em processos industriais.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/Sulfato_Aluminio_Isento.pdf' %}">
+                <strong>Sulfato de alumínio isento de ferro</strong>
+                <p class="descricao">Coagulante para clareamento de água.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/Sulfato_Aluminio_Ferroso.pdf' %}">
+                <strong>Sulfato de Alumínio Ferroso</strong>
+                <p class="descricao">Coagulante granular/líquido para ETAs.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/Policloreto_Aluminio.pdf' %}">
+                <strong>Policloreto de Alumínio</strong>
+                <p class="descricao">Coagulante líquido altamente eficiente.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds003_hidroxido_sodio.pdf' %}">
+                <strong>Hidróxido de Sódio 50%</strong>
+                <p class="descricao">Alcalinizante para processos industriais.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/Peroxido_Hidrogenio.pdf' %}">
+                <strong>Peróxido de Hidrogênio 50%</strong>
+                <p class="descricao">Oxidante para sanitização e processos químicos.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds006_carbonato_sodio_barrilha_leve.pdf' %}">
+                <strong>Barrilha Leve</strong>
+                <p class="descricao">Correção de pH e alcalinidade.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/fds008_acido_fluossilicico.pdf' %}">
+                <strong>Ácido Fluorsilícico</strong>
+                <p class="descricao">Utilizado na fluoretação e indústria química.</p>
+            </label>
+        </div>
+
+        <div class="produto-item">
+            <label>
+                <input type="checkbox" name="produtos" value="{% static 'core/fds/Fluossilicato_Sodio.pdf' %}">
+                <strong>Fluossilicato de Sódio</strong>
+                <p class="descricao">Usado em processos industriais e fluoretação.</p>
+            </label>
+        </div>
+
+    </div> <!-- fim lista-produtos -->
+
+
+    <!-- ================================================
+         FORMULÁRIO
+    ================================================= -->
+    <section class="formulario-produtos">
+        <div class="container">
+            <h2>Preencha o formulário para liberar o download</h2>
+            <p>Após enviar seus dados, o botão de download será habilitado automaticamente.</p>
+
+            <form id="form-fds" method="POST" class="form-produtos">
+                {% csrf_token %}
+                <div class="linha">
+                    <input type="text" name="nome" placeholder="Nome completo" required>
+                    <input type="email" name="email" placeholder="E-mail" required>
+                </div>
+
+                <div class="linha">
+                    <input type="text" name="empresa" placeholder="Empresa" required>
+                    <input type="text" name="telefone" placeholder="Telefone">
+                </div>
+
+                <button type="submit" class="btn-enviar-produtos">Enviar e liberar download</button>
+            </form>
+
+            <button id="btn-download" class="btn-download" disabled>Fazer Download</button>
+        </div>
+    </section>
+
+</div> <!-- fim container -->
+
 {% endblock %}
+
 
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+    /* ============================================
+       ENVIO DO FORMULÁRIO
+    ============================================ */
     const form = document.getElementById('form-fds');
     const btnDownload = document.getElementById('btn-download');
 
     form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const response = await fetch("{% url 'enviar_fds_form' %}", { method: "POST", body: formData });
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    // 🔹 PEGAR OS PRODUTOS SELECIONADOS E ENVIAR JUNTO PARA O BACKEND
+    const selecionados = document.querySelectorAll('input[name=produtos]:checked');
+    selecionados.forEach(chk => {
+        formData.append('produtos', chk.value);
+    });
+
+    const response = await fetch("{% url 'enviar_fds_form' %}", { 
+        method: "POST",
+        body: formData,
+        credentials: "same-origin"
+    });
+
         if (response.ok) {
             alert("Formulário enviado! Download liberado.");
             btnDownload.disabled = false;
@@ -101,16 +238,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
+    /* ============================================
+       DOWNLOAD DOS PDFs
+    ============================================ */
     btnDownload.addEventListener('click', () => {
-        document.querySelectorAll('input[type=checkbox]:checked').forEach(chk => {
+        const selecionados = document.querySelectorAll('input[name=produtos]:checked');
+
+        if (selecionados.length === 0) {
+            alert("Selecione ao menos um produto para baixar.");
+            return;
+        }
+
+        selecionados.forEach(chk => {
             const link = document.createElement('a');
             link.href = chk.value;
             link.download = chk.value.split('/').pop();
-            document.body.appendChild(link);
             link.click();
-            link.remove();
         });
     });
+
+
+    /* ============================================
+       BUSCA DE PRODUTOS COM LUPA + LIMPAR
+    ============================================ */
+    const campoBusca = document.getElementById("busca-produtos");
+    const limparBusca = document.getElementById("limpar-busca");
+
+    campoBusca.addEventListener("input", function () {
+        const termo = this.value.toLowerCase();
+        const produtos = document.querySelectorAll(".produto-item");
+
+        produtos.forEach(prod => {
+            const texto = prod.textContent.toLowerCase();
+            prod.style.display = texto.includes(termo) ? "flex" : "none";
+        });
+
+        limparBusca.style.display = termo.length > 0 ? "block" : "none";
+    });
+
+    limparBusca.addEventListener("click", () => {
+        campoBusca.value = "";
+        limparBusca.style.display = "none";
+        document.querySelectorAll(".produto-item").forEach(p => p.style.display = "flex");
+    });
+
 });
 </script>
 {% endblock %}

@@ -16,12 +16,10 @@
          ===================================== -->
     <header class="cabecalho">
         <div class="logo">
-            <!-- Logo da empresa -->
             <img src="{% static 'img/logo-fcf.png' %}" alt="Logo FCF">
             <h1>FCF Químicos</h1>
         </div>
 
-        <!-- Menu principal -->
         <nav>
             <ul>
                 <li>
@@ -33,12 +31,9 @@
                 <li>
                     <a href="{% url 'produtos' %}" class="{% if request.path == '/produtos/' %}active{% endif %}">Produtos</a>
                 </li>
-              
                 <li>
                     <a href="{% url 'contato' %}" class="{% if request.path == '/contato/' %}active{% endif %}">Contato</a>
                 </li>
-                
-                
             </ul>
         </nav>
     </header>
@@ -49,23 +44,46 @@
     {% block content %}
     {% endblock %}
 
-    <!-- =====================================
+        <!-- =====================================
          RODAPÉ COM VÍDEO DE FUNDO
          ===================================== -->
-    <footer class="footer">
-        <video autoplay muted loop playsinline preload="metadata" class="background-video">
-            <source src="{% static 'core/videos/rodape.mp4' %}" type="video/mp4">
-            Seu navegador não suporta o elemento de vídeo.
-        </video>
+   <footer class="footer">
 
-        <div class="footer-content">
-            <p>© 2025 FCF Químicos - Todos os direitos reservados.</p>
-        </div>
-    </footer>
+     {% comment %} <div class="video-bg">
+        <video class="footer-video" autoplay muted loop playsinline>
+            <source src="{% static 'core/videos/videoFooter.mp4' %}" type="video/mp4">
+        </video>
+    </div> {% endcomment %}
+
+
+  <div class="footer-inner">
+
+    <!-- Empresa centralizada -->
+    <h3 class="footer-empresa">FCF Químicos & Soluções Logística Ltda</h3>
+
+    <!-- Links à direita -->
+    <nav class="footer-links">
+        <a href="{% url 'sobre' %}">Sobre nós</a>
+        <span>|</span>
+        <a href="{% url 'contato' %}">Contato</a>
+    </nav>
+
+    <!-- Copyright abaixo dos links -->
+    <p class="footer-copy">© 2025 FCF Químicos - Todos os direitos reservados.</p>
+
+</div>
+
+
+</footer>
+
+
+
 
     <!-- Scripts carregados no final -->
     <script src="{% static 'core/js/mvv-tabs.js' %}"></script>
     <script src="{% static 'core/js/banner-shrink.js' %}"></script>
 
+    <!-- Bloco adicional para scripts específicos das páginas -->
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

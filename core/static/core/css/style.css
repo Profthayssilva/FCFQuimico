@@ -32,6 +32,100 @@ h1, h2, h3, p {
     padding: 0;
 }
 
+/* ===========================
+   FOOTER COM VIDEO LOCAL + OVERLAY
+=========================== */
+
+.footer {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    background-color: #0A1D2E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Container do vídeo */
+.video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* OVERLAY AZUL CORPORATIVO */
+.video-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 29, 46, 0.55); /* azul escuro com transparência */
+    z-index: 3; /* fica acima do vídeo e abaixo do texto */
+}
+
+/* Vídeo como background */
+.footer-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Conteúdo sobre o overlay */
+.footer-inner {
+    position: relative;
+    z-index: 4;
+    width: 90%;
+    max-width: 1400px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    padding: 20px 0;
+}
+
+.footer-links a {
+    color: #ffffff;
+    margin: 0 6px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #86C3FF;
+}
+
+
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .footer {
+        height: 200px;
+    }
+
+    .footer-video {
+        width: 180%;
+        height: 180%;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        gap: 10;
+         text-align: center;
+    }
+}
+
+
 /* ===============================
    BANNER PRINCIPAL COM VÍDEO DE FUNDO
    =============================== */
@@ -66,7 +160,7 @@ h1, h2, h3, p {
     height: 100%;
     background: rgba(0, 30, 60, 0.35);
     backdrop-filter: blur(2px);
-    z-index: 1;
+    z-index: 0.6;
 }
 
 /* 🔸 TEXTO SOBRE O VÍDEO */
@@ -85,14 +179,14 @@ h1, h2, h3, p {
 }
 
 .texto-banner h1 {
-    font-size: 4rem;
+    font-size: 5rem;
     font-weight: 700;
     margin-bottom: 20px;
     text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
 }
 
 .texto-banner p {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     line-height: 1.6;
     margin-bottom: 30px;
 }
@@ -160,7 +254,7 @@ h1, h2, h3, p {
 }
 
 .cabecalho .logo h1 {
-    color: #ffffff; /* branco no topo (quando o fundo é transparente) */
+    color: #004D7A;/* branco no topo (quando o fundo é transparente) */
     font-size: 1.8rem;
     font-weight: 700;
     margin: 0;
@@ -192,7 +286,7 @@ h1, h2, h3, p {
 
 .cabecalho nav a {
     text-decoration: none;
-    color: white; /* branco no topo */
+    color: #00B4DB; /* branco no topo */
     font-weight: 600;
     font-size: 1rem;
     transition: color 0.3s ease, border-bottom 0.3s ease;
@@ -244,23 +338,7 @@ h1, h2, h3, p {
     }
 }
 
-/* ==========================================
-   SEÇÃO DO BANNER PRINCIPAL (HOME)
-   ========================================== */
-/* ==========================================
-   BANNER DE CONTATO - IMAGEM REAL + VIDRO
-   ========================================== */
-/* ==========================================
-   BANNER DE CONTATO - IMAGEM + VIDRO
-   ========================================== */
-
-
-/* ==========================================
-   BANNER DE CONTATO E PRODUTOS — COM EFEITO SHRINK
-   ========================================== */
-
-.banner-contato,
-.banner-produto {
+.banner-contato {
     position: relative;
     width: 100%;
     height: 55vh; /* 🔹 Altura inicial igual à da página Sobre Nós */
@@ -272,20 +350,17 @@ h1, h2, h3, p {
     /* background-color: #002b50; */
 }
 /* 🔹 Encaixe suave com o cabeçalho fixo */
-.banner-contato,
-.banner-produto {
+.banner-contato{
     margin-top: 0px; /* altura do cabeçalho padrão */
 }
 
-.banner-contato.shrink,
-.banner-produto.shrink {
+.banner-contato.shrink{
     margin-top: 85px; /* quando o cabeçalho encolhe */
 }
 
 
 /* 🎬 VÍDEO DE FUNDO */
-.banner-contato .banner-video,
-.banner-produto .banner-video 
+.banner-contato .banner-video
 {
     position: absolute;
     top: 0;
@@ -325,25 +400,22 @@ h1, h2, h3, p {
 }
 
 /* 🔹 GRADIENTE SUAVE DO TOPO */
-.banner-contato .banner-gradient,
-.banner-produto .banner-gradient {
+.banner-contato .banner-gradient{
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 60%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 80%);
     z-index: 2;
 }
 
 /* 🔸 EFEITO SHRINK (ao rolar) */
-.banner-contato.shrink,
-.banner-produto.shrink {
+.banner-contato.shrink{
     height: 25vh; /* 🔹 reduz levemente, mas continua visível */
 }
 
-.banner-contato.shrink .overlay-glass,
-.banner-produto.shrink .overlay-glass {
+.banner-contato.shrink .overlay-glass{
     transform: scale(0.85);
     opacity: 0.9;
 }
@@ -675,41 +747,7 @@ textarea:focus {
 }
 
 
-/* ==========================================
-   RODAPÉ (FOOTER)
-   ========================================== */
-.footer {
-    background-color: var(--azul-escuro);
-    color: var(--branco);
-    text-align: center;
-    padding: 30px 20px;
-    position: relative;
-    overflow: hidden;
-}
 
-.footer .background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    opacity: 0.9;
-}
-
-.footer-content {
-    position: relative;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 10px 20px;
-    border-radius: 8px;
-}
-
-.footer p {
-    margin: 0;
-    font-size: 0.9rem;
-}
 
 /* ==========================================
    RESPONSIVIDADE
@@ -745,48 +783,32 @@ textarea:focus {
 }
 
 
-.produtos-fds {
-    /* padding: 80px 10%; */
-    background: #f8fbff;
-    color: #002b5c;
-}
 
-.produtos-fds h1 {
-    font-size: 2.2rem;
-    text-align: center;
-    color: #004D7A;
-    margin-bottom: 20px;
-}
 
-.produtos-fds p {
-    text-align: center;
-    font-size: 1rem;
-    margin-bottom: 40px;
-}
 
 .lista-produtos {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colunas iguais */
-    gap: 25px; /* espaço entre colunas e linhas */
-    max-width: 1200px; /* largura máxima do container */
-    margin: 0 auto 60px auto; /* centraliza o grid na tela */
-    padding: 0 40px; /* respiro lateral */
-    justify-items: stretch; /* 🔹 os itens ocupam toda a largura da célula */
-    align-items: stretch; /* 🔹 altura uniforme */
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 colunas equilibradas */
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto 60px auto;
+    padding: 0 40px;
+
+    /* melhora o comportamento dos cards ao expandir no hover */
+    align-items: start; 
 }
 
-
-.lista-produtos label {
-    background: #eef5ff;
-    padding: 12px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+.produto-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    border-color: #004D7A;
 }
 
-.lista-produtos label:hover {
-    background: #d9ecff;
+.produto-item strong {
+    color: #004D7A;        /* cor do título */
+    font-size: 1.05rem;
 }
+
 
 .linha {
     display: flex;
@@ -832,8 +854,8 @@ input {
     background-color: #f5f9fc;
     padding: 80px 0;
     text-align: center;
-    opacity: 0;
-    transform: translateY(50px);
+    opacity: 1;               /* CORREÇÃO */
+    transform: none;          /* CORREÇÃO */
     transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
@@ -906,3 +928,211 @@ textarea:focus {
     box-shadow: 0 6px 15px rgba(0, 77, 122, 0.4);
 }
 
+
+.video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.background-video, 
+.banner-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+/* =====================================
+   TÍTULO + BUSCA (OPÇÃO 1)
+===================================== */
+.titulo-e-busca {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* TÍTULO CENTRALIZADO */
+.titulo-e-busca h1 {
+    text-align: center;
+    color: #004D7A;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* BUSCA À DIREITA */
+.busca-wrapper {
+    position: relative;   /* 🔹 necessário para ícones */
+    justify-self: end;
+}
+
+/* =====================================
+   CAMPO DE BUSCA
+===================================== */
+.campo-busca {
+    padding: 8px 30px 8px 30px; /* espaço p/ lupa e X */
+    width: 180px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: 0.3s ease;
+    background-color: #ffffff;
+}
+
+/* FOCO */
+.campo-busca:focus {
+    border-color: #0F3C73;
+    box-shadow: 0 0 6px rgba(15, 60, 115, 0.25);
+    outline: none;
+}
+
+/* =====================================
+   LUPA MINIMALISTA
+===================================== */
+.icone-lupa {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #777;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.icone-lupa::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 2px;
+    background: #777;
+    top: 9px;
+    left: 9px;
+    transform: rotate(45deg);
+}
+
+/* =====================================
+   ÍCONE LIMPAR (X)
+===================================== */
+.icone-limpar {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: none;
+}
+
+/* MOSTRA O X QUANDO DIGITA */
+.campo-busca:not(:placeholder-shown) ~ .icone-limpar {
+    display: block;
+}
+
+/* =====================================
+   RESPONSIVO (MOBILE)
+===================================== */
+@media (max-width: 768px) {
+    .titulo-e-busca {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .titulo-e-busca h1 {
+        text-align: center;
+    }
+
+    .busca-wrapper {
+        justify-self: center;
+        width: 100%;
+    }
+
+    .campo-busca {
+        width: 100%;
+    }
+}
+
+
+/* Caixa da empresa no contato */
+/* Container principal */
+.dados-empresa-contato {
+    margin-top: 40px;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    align-items: center;
+    gap: 50px;
+
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* LOGO refinada e elegante */
+.logo-contato {
+    width: 280px;    /* Redução perfeita para equilíbrio */
+    height: auto;
+    object-fit: contain;
+    opacity: 0.95;
+}
+
+/* Linha azul minimalista */
+.linha-vertical {
+    width: 2px;
+    height: 140px;  /* Altura proporcional ao conteúdo */
+    background-color: #004D7A;
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+/* Texto centralizado e refinado */
+.info-contato {
+    text-align: left;
+    flex: 1;
+}
+
+.info-contato h3 {
+    color: #004D7A;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.info-contato p {
+    margin: 4px 0;
+    font-size: 1rem;
+    color: #444;
+}
+
+
+/* ————— MOBILE ————— */
+@media (max-width: 800px) {
+
+    .dados-empresa-contato {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .linha-vertical {
+        width: 80%;
+        height: 2px;  /* Linha vira horizontal */
+    }
+
+    .logo-contato {
+        width: 150px;
+    }
+
+    .info-contato {
+        text-align: center;
+    }
+}

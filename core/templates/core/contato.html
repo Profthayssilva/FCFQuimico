@@ -4,25 +4,18 @@
 {% block title %}Contato | FCF Químicos{% endblock %}
 
 {% block content %}
+
 <!-- ===============================
      BANNER DE CONTATO
 =============================== -->
 <section class="banner-contato" id="banner-contato">
 
-    <!-- VÍDEO DO VIMEO -->
     <div class="banner-video-wrapper">
-        <iframe
-            src="https://player.vimeo.com/video/1145394952?background=1&autoplay=1&muted=1&loop=1&title=0&byline=0&portrait=0"
-            frameborder="0"
-            webkitallowfullscreen
-            mozallowfullscreen
-            allowfullscreen
-            allow="autoplay; fullscreen"
-            class="banner-video"
-        ></iframe>
+        <video class="footer-video" autoplay muted loop playsinline>
+            <source src="{% static 'core/videos/videoContato.mp4' %}" type="video/mp4">
+        </video>
     </div>
 
-    <!-- camada de vidro translúcido -->
     <div class="overlay-glass">
         <h1>Contato</h1>
         <p>Entre em contato conosco — será um prazer atendê-lo.</p>
@@ -39,19 +32,54 @@
         <h2>Preencha o formulário de contato</h2>
         <p>Por favor, preencha os campos abaixo e nossa equipe entrará em contato o mais breve possível.</p>
 
-        <form class="form-contato" method="POST">
+        <!-- ✅ FORM CORRIGIDO -->
+        <form
+            class="form-contato"
+            method="POST"
+            action="{% url 'enviar_contato' %}"
+        >
             {% csrf_token %}
+
             <div class="linha">
                 <input type="text" name="nome" placeholder="Nome completo" required>
                 <input type="email" name="email" placeholder="E-mail" required>
             </div>
+
             <div class="linha">
                 <input type="text" name="empresa" placeholder="Empresa">
                 <input type="text" name="telefone" placeholder="Telefone">
             </div>
+
             <textarea name="mensagem" rows="5" placeholder="Sua mensagem..." required></textarea>
-            <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+
+            <button type="submit" class="btn-enviar">
+                Enviar Mensagem
+            </button>
         </form>
     </div>
+
+    <!-- ===============================
+         DADOS DA EMPRESA
+    =============================== -->
+    <div class="dados-empresa-contato">
+
+        <img
+            src="{% static 'core/img/LogoContato.png' %}"
+            alt="FCF Químicos"
+            class="logo-contato"
+        >
+
+        <div class="linha-vertical"></div>
+
+        <div class="info-contato">
+            <h3>FCF Químicos & Soluções Logística Ltda</h3>
+            <p>CNPJ: 32.291.232/0001-32</p>
+            <p>Rua Montreal - Residencial Ayrton Senna</p>
+            <p>Anápolis - GO • CEP 75.097-123</p>
+            <p>Telefone: (62) 9 9439-0098</p>
+        </div>
+
+    </div>
 </section>
+
 {% endblock %}

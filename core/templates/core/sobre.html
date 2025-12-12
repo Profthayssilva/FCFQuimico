@@ -4,31 +4,37 @@
 {% block content %}
 
 <!-- ===============================
-     BANNER SUPERIOR
-     =============================== -->
-<section class="banner-sobre">
-    {% comment %} <img src="{% static 'img/logo-fcf.png' %}" alt="Logo FCF" class="logo-banner"> {% endcomment %}
+     BANNER DE CONTATO
+=============================== -->
+<section class="banner-contato" id="banner-contato">
 
-      
-        <video autoplay muted loop playsinline preload="auto" class="banner-video">
-        <source src="{% static 'core/videos/banner_sobre.mp4' %}" type="video/mp4">
-        Seu navegador não suporta vídeos em HTML5.
-    </video>
-</section> 
+    <!-- 🎬 VÍDEO DO VIMEO COMO FUNDO -->
+    <div class="banner-video-wrapper">
+        <video class="footer-video" autoplay muted loop playsinline>
+            <source src="{% static 'core/videos/videoContato.mp4' %}" type="video/mp4">
+        </video>
+    </div>
 
-{% comment %} <section class="banner-sobre">
-    <h1>Sobre Nós</h1>
-</section> {% endcomment %}
+    <!-- camada de vidro translúcido -->
+    <div class="overlay-glass">
+        <h1>Sobre nós</h1>
+        <p>Um pouco sobre nós</p>
+    </div>
+
+    <div class="banner-gradient"></div>
+</section>
+
 
 <!-- ===============================
-     SEÇÃO SOBRE + MISSÃO/VISÃO/VALORES (LADO A LADO)
-     =============================== -->
+     SEÇÃO SOBRE + MISSÃO/VISÃO/VALORES
+=============================== -->
 <section class="sobre">
     <div class="container sobre-flex">
 
-        <!-- Coluna esquerda: texto institucional -->
+        <!-- Coluna esquerda -->
         <div class="texto-sobre">
             <h2>// Conheça<br><span>Um Pouco Sobre Nós</span></h2>
+
             <p>
                 A empresa <strong>FCF Químicos & Soluções Logísticas</strong> é uma empresa
                 genuinamente goiana, fundada em dezembro de 2018, com compromisso
@@ -36,6 +42,7 @@
                 trabalhando com a distribuição de produtos químicos voltados ao
                 tratamento e desinfecção de águas.
             </p>
+
             <p>
                 Nosso propósito é garantir que nossos clientes tenham acesso a soluções
                 confiáveis e responsáveis, contribuindo para a preservação dos recursos
@@ -48,8 +55,9 @@
             </blockquote>
         </div>
 
-        <!-- Coluna direita: abas dentro do quadro -->
+        <!-- Coluna direita -->
         <div class="mvv-box">
+
             <div class="tabs">
                 <button class="tab-button active" data-tab="missao">Missão</button>
                 <button class="tab-button" data-tab="visao">Visão</button>
@@ -84,6 +92,7 @@
                     <li><strong>Valorização das pessoas:</strong> Investimos em capacitação e bem-estar de nossos colaboradores, pois acreditamos que eles são o nosso maior patrimônio.</li>
                 </ul>
             </div>
+
         </div>
 
     </div>
