@@ -82,101 +82,91 @@ def enviar_contato(request):
 
 @csrf_exempt
 def enviar_fds_form(request):
-
     if request.method != "POST":
-        return JsonResponse(
-            {"status": "erro", "mensagem": "Método inválido"},
-            status=400
+        return JsonResponse({"status": "erro", "mensagem": "Método inválido"}, status=400)
+
+    try:
+        nome = request.POST.get("nome")
+        email_usuario = request.POST.get("email")
+        empresa = request.POST.get("empresa")
+        telefone = request.POST.get("telefone")
+        produtos_selecionados = request.POST.getlist("produtos")
+
+        print("PRODUTOS RECEBIDOS:", produtos_selecionados)
+
+        if not email_usuario:
+            return JsonResponse({"status": "erro", "mensagem": "E-mail obrigatório"}, status=400)
+
+        anexos = []
+
+        for url in produtos_selecionados:
+            nome_arquivo = os.path.basename(url)
+
+            caminho_pdf = (
+                settings.BASE_DIR
+                / "core"
+                / "static"
+                / "core"
+                / "fds"
+                / nome_arquivo
+            )
+
+            if caminho_pdf.exists():
+                anexos.append(str(caminho_pdf))
+
+        print("ANEXOS ENCONTRADOS:", anexos)
+
+        # ================= EMAIL PARA CLIENTE =================
+        html_user = f"""
+        <div style="font-family: Arial;">
+            <h2>Fichas de Segurança (FDS)</h2>
+            <p>Olá {nome},</p>
+            <p>Segue em anexo as FDS solicitadas.</p>
+            <p>Equipe FCF Químicos</p>
+        </div>
+        """
+
+        email_usuario_envio = EmailMessage(
+            subject="Fichas de Segurança (FDS) - FCF Químicos",
+            body=html_user,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[email_usuario],
         )
 
-    nome = request.POST.get("nome")
-    email_usuario = request.POST.get("email")
-    empresa = request.POST.get("empresa")
-    telefone = request.POST.get("telefone")
+        email_usuario_envio.content_subtype = "html"
 
-    produtos_selecionados = request.POST.getlist("produtos")
+        for pdf in anexos:
+            email_usuario_envio.attach_file(pdf)
 
-    print("PRODUTOS RECEBIDOS:", produtos_selecionados)
+        email_usuario_envio.send()
 
-    # ===============================
-    # LOCALIZAR PDFs (VERSÃO PRODUÇÃO)
-    # ===============================
+        # ================= EMAIL PARA EMPRESA =================
+        html_empresa = f"""
+        <div style="font-family: Arial;">
+            <h2>Nova Solicitação de FDS</h2>
+            <p><strong>Nome:</strong> {nome}</p>
+            <p><strong>Email:</strong> {email_usuario}</p>
+            <p><strong>Empresa:</strong> {empresa}</p>
+            <p><strong>Telefone:</strong> {telefone}</p>
+        </div>
+        """
 
-    anexos = []
+        email_empresa = EmailMessage(
+            subject="Nova Solicitação de FDS - FCF Químicos",
+            body=html_empresa,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=["contatofcfquimicos@gmail.com"],
+            reply_to=[email_usuario],
+        )
 
-    for url in produtos_selecionados:
-        nome_arquivo = os.path.basename(url)
+        email_empresa.content_subtype = "html"
+        email_empresa.send()
 
-        caminho_pdf = finders.find(f"core/fds/{nome_arquivo}")
+        return JsonResponse({"status": "ok"})
 
-        if caminho_pdf:
-            anexos.append(caminho_pdf)
-        else:
-            print(f"Arquivo não encontrado: {nome_arquivo}")
-
-    print("ANEXOS ENCONTRADOS:", anexos)
-
-    # ===============================
-    # E-MAIL PARA O CLIENTE
-    # ===============================
-
-    html_user = f"""
-    <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2 style="color:#004D7A;">Fichas de Segurança (FDS)</h2>
-
-        <p>Olá <strong>{nome}</strong>,</p>
-        <p>Segue em anexo as FDS solicitadas.</p>
-
-        <p style="font-size: 13px; color:#777;">
-            Atenciosamente,<br>
-            Equipe FCF Químicos
-        </p>
-    </div>
-    """
-
-    email_usuario_envio = EmailMessage(
-        subject="Fichas de Segurança (FDS) - FCF Químicos",
-        body=html_user,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=[email_usuario],
-    )
-
-    email_usuario_envio.content_subtype = "html"
-
-    for pdf in anexos:
-        email_usuario_envio.attach_file(pdf)
-
-    email_usuario_envio.send(fail_silently=False)
-
-    # ===============================
-    # E-MAIL PARA A EMPRESA
-    # ===============================
-
-    html_empresa = f"""
-    <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2 style="color:#004D7A;">Nova Solicitação de FDS</h2>
-
-        <p><strong>Nome:</strong> {nome}</p>
-        <p><strong>Email:</strong> {email_usuario}</p>
-        <p><strong>Empresa:</strong> {empresa}</p>
-        <p><strong>Telefone:</strong> {telefone}</p>
-
-        <h3>Produtos solicitados:</h3>
-        <ul>
-            {''.join(f"<li>{os.path.basename(p)}</li>" for p in produtos_selecionados)}
-        </ul>
-    </div>
-    """
-
-    email_empresa = EmailMessage(
-        subject="Nova Solicitação de FDS - FCF Químicos",
-        body=html_empresa,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=["contatofcfquimicos@gmail.com"],
-        reply_to=[email_usuario] if email_usuario else [],
-    )
-
-    email_empresa.content_subtype = "html"
-    email_empresa.send(fail_silently=False)
-
-    return JsonResponse({"status": "ok"})
+    except Exception as e:
+        print("ERRO AO ENVIAR FDS:", str(e))
+        return JsonResponse(
+            {"status": "erro", "mensagem": "Erro interno ao enviar e-mail"},
+            status=500
+        )
