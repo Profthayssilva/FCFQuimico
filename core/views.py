@@ -1,10 +1,10 @@
 import os
-
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.staticfiles import finders
 
 
 # ===========================
@@ -14,11 +14,14 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     return render(request, 'core/index.html')
 
+
 def sobre(request):
     return render(request, 'core/sobre.html')
 
+
 def produtos(request):
     return render(request, 'core/produtos.html')
+
 
 def contato(request):
     return render(request, 'core/contato.html')
@@ -58,7 +61,7 @@ def enviar_contato(request):
         """
 
         email_empresa = EmailMessage(
-            subject="📬 Nova mensagem no site - FCF Químicos",
+            subject="Nova mensagem no site - FCF Químicos",
             body=html_empresa,
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=["contatofcfquimicos@gmail.com"],
@@ -79,8 +82,12 @@ def enviar_contato(request):
 
 @csrf_exempt
 def enviar_fds_form(request):
+
     if request.method != "POST":
-        return JsonResponse({"status": "erro", "mensagem": "Método inválido"}, status=400)
+        return JsonResponse(
+            {"status": "erro", "mensagem": "Método inválido"},
+            status=400
+        )
 
     nome = request.POST.get("nome")
     email_usuario = request.POST.get("email")
@@ -92,30 +99,27 @@ def enviar_fds_form(request):
     print("PRODUTOS RECEBIDOS:", produtos_selecionados)
 
     # ===============================
-    # LOCALIZAR PDFs
+    # LOCALIZAR PDFs (VERSÃO PRODUÇÃO)
     # ===============================
+
     anexos = []
 
     for url in produtos_selecionados:
         nome_arquivo = os.path.basename(url)
 
-        caminho_pdf = (
-            settings.BASE_DIR
-            / "core"
-            / "static"
-            / "core"
-            / "fds"
-            / nome_arquivo
-        )
+        caminho_pdf = finders.find(f"core/fds/{nome_arquivo}")
 
-        if caminho_pdf.exists():
-            anexos.append(str(caminho_pdf))
+        if caminho_pdf:
+            anexos.append(caminho_pdf)
+        else:
+            print(f"Arquivo não encontrado: {nome_arquivo}")
 
     print("ANEXOS ENCONTRADOS:", anexos)
 
     # ===============================
     # E-MAIL PARA O CLIENTE
     # ===============================
+
     html_user = f"""
     <div style="font-family: Arial, sans-serif; padding: 20px;">
         <h2 style="color:#004D7A;">Fichas de Segurança (FDS)</h2>
@@ -136,6 +140,7 @@ def enviar_fds_form(request):
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[email_usuario],
     )
+
     email_usuario_envio.content_subtype = "html"
 
     for pdf in anexos:
@@ -146,6 +151,7 @@ def enviar_fds_form(request):
     # ===============================
     # E-MAIL PARA A EMPRESA
     # ===============================
+
     html_empresa = f"""
     <div style="font-family: Arial, sans-serif; padding: 20px;">
         <h2 style="color:#004D7A;">Nova Solicitação de FDS</h2>

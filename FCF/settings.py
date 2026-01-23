@@ -15,10 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ============================
 # SEGURANÇA
 # ============================
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    "django-insecure-hcg&z$!gjh^=^t73z_@61qc1)7vwerif6#_37*%ei@3j*o1e+t"
-)
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = False
 
@@ -38,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'core',
 ]
 
@@ -48,7 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # 🔹 necessário para static no Render
+    # Static files no Render
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,6 +62,7 @@ MIDDLEWARE = [
 # URL / WSGI
 # ============================
 ROOT_URLCONF = 'FCF.urls'
+
 WSGI_APPLICATION = 'FCF.wsgi.application'
 
 
@@ -77,6 +76,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -101,24 +101,27 @@ DATABASES = {
 # INTERNACIONALIZAÇÃO
 # ============================
 LANGUAGE_CODE = 'pt-br'
+
 TIME_ZONE = 'America/Sao_Paulo'
+
 USE_I18N = True
 USE_TZ = True
 
 
 # ============================
-# ARQUIVOS ESTÁTICOS (CRÍTICO)
+# ARQUIVOS ESTÁTICOS
 # ============================
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'core' / 'static'
+    BASE_DIR / 'core' / 'static',
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# 🔹 Whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = (
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 
 
 # ============================
@@ -135,14 +138,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # ============================
-# EMAIL (GMAIL)
+# EMAIL (GMAIL / RENDER)
 # ============================
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.smtp.EmailBackend"
+)
 
-EMAIL_HOST_USER = "contatofcfquimicos@gmail.com"
-EMAIL_HOST_PASSWORD = "lzof vomz qhaj vjpo"
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
 
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL",
+    EMAIL_HOST_USER
+)
