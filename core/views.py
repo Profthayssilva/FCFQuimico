@@ -6,6 +6,17 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.staticfiles import finders
 
+from django.core.mail import send_mail
+
+def teste_email(request):
+    send_mail(
+        'Teste Render',
+        'Email funcionando!',
+        settings.EMAIL_HOST_USER,
+        ['contatofcfquimicos@gmail.com'],
+        fail_silently=False,
+    )
+    return HttpResponse("Email enviado")
 
 # ===========================
 # PÁGINAS
