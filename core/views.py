@@ -1,26 +1,33 @@
 import os
-from django.conf import settings
-from django.core.mail import EmailMessage
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.staticfiles import finders
 
-from django.core.mail import send_mail
+from django.conf import settings
+from django.core.mail import EmailMessage, send_mail
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
+from django.views.decorators.http import require_POST
+
+
+# =====================================
+# TESTE DE EMAIL
+# =====================================
 
 def teste_email(request):
-    send_mail(
-        'Teste Render',
-        'Email funcionando!',
-        settings.EMAIL_HOST_USER,
-        ['contatofcfquimicos@gmail.com'],
-        fail_silently=False,
-    )
-    return HttpResponse("Email enviado")
+    try:
+        send_mail(
+            subject='Teste Render',
+            message='Email funcionando!',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=['contatofcfquimicos@gmail.com'],
+            fail_silently=False,
+        )
+        return HttpResponse("Email enviado com sucesso!")
+    except Exception as e:
+        return HttpResponse(f"Erro ao enviar email: {str(e)}")
 
-# ===========================
+
+# =====================================
 # PÁGINAS
-# ===========================
+# =====================================
 
 def index(request):
     return render(request, 'core/index.html')
@@ -38,21 +45,20 @@ def contato(request):
     return render(request, 'core/contato.html')
 
 
-# ===========================
+# =====================================
 # FORMULÁRIO DE CONTATO
-# ===========================
+# =====================================
 
-@csrf_exempt
+@require_POST
 def enviar_contato(request):
-    print("FORMULÁRIO DE CONTATO RECEBIDO")
 
-    if request.method == "POST":
-        nome = request.POST.get("nome")
-        email_usuario = request.POST.get("email")
-        empresa = request.POST.get("empresa")
-        telefone = request.POST.get("telefone")
-        mensagem = request.POST.get("mensagem")
+    nome = request.POST.get("nome")
+    email_usuario = request.POST.get("email")
+    empresa = request.POST.get("empresa")
+    telefone = request.POST.get("telefone")
+    mensagem = request.POST.get("mensagem")
 
+    try:
         html_empresa = f"""
         <div style="font-family: Arial, sans-serif; padding: 20px;">
             <h2 style="color:#004D7A;">Nova mensagem recebida pelo site</h2>
@@ -66,7 +72,7 @@ def enviar_contato(request):
             <p style="white-space: pre-line; color:#333;">{mensagem}</p>
 
             <p style="margin-top:30px; font-size:12px; color:#777;">
-                Este e-mail foi enviado automaticamente pelo formulário de contato do site FCF Químicos.
+                Este e-mail foi enviado automaticamente pelo formulário do site FCF Químicos.
             </p>
         </div>
         """
@@ -84,17 +90,20 @@ def enviar_contato(request):
 
         return render(request, "core/contato.html", {"sucesso": True})
 
-    return render(request, "core/contato.html")
+    except Exception as e:
+        return render(
+            request,
+            "core/contato.html",
+            {"erro": f"Erro ao enviar mensagem: {str(e)}"}
+        )
 
 
-# ===========================
+# =====================================
 # FORMULÁRIO DE ENVIO DE FDS
-# ===========================
+# =====================================
 
-@csrf_exempt
+@require_POST
 def enviar_fds_form(request):
-    if request.method != "POST":
-        return JsonResponse({"status": "erro", "mensagem": "Método inválido"}, status=400)
 
     try:
         nome = request.POST.get("nome")
@@ -103,10 +112,11 @@ def enviar_fds_form(request):
         telefone = request.POST.get("telefone")
         produtos_selecionados = request.POST.getlist("produtos")
 
-        print("PRODUTOS RECEBIDOS:", produtos_selecionados)
-
         if not email_usuario:
-            return JsonResponse({"status": "erro", "mensagem": "E-mail obrigatório"}, status=400)
+            return JsonResponse(
+                {"status": "erro", "mensagem": "E-mail obrigatório"},
+                status=400
+            )
 
         anexos = []
 
@@ -125,9 +135,8 @@ def enviar_fds_form(request):
             if caminho_pdf.exists():
                 anexos.append(str(caminho_pdf))
 
-        print("ANEXOS ENCONTRADOS:", anexos)
-
         # ================= EMAIL PARA CLIENTE =================
+
         html_user = f"""
         <div style="font-family: Arial;">
             <h2>Fichas de Segurança (FDS)</h2>
@@ -149,9 +158,10 @@ def enviar_fds_form(request):
         for pdf in anexos:
             email_usuario_envio.attach_file(pdf)
 
-        email_usuario_envio.send()
+        email_usuario_envio.send(fail_silently=False)
 
         # ================= EMAIL PARA EMPRESA =================
+
         html_empresa = f"""
         <div style="font-family: Arial;">
             <h2>Nova Solicitação de FDS</h2>
@@ -171,13 +181,12 @@ def enviar_fds_form(request):
         )
 
         email_empresa.content_subtype = "html"
-        email_empresa.send()
+        email_empresa.send(fail_silently=False)
 
         return JsonResponse({"status": "ok"})
 
     except Exception as e:
-        print("ERRO AO ENVIAR FDS:", str(e))
         return JsonResponse(
-            {"status": "erro", "mensagem": "Erro interno ao enviar e-mail"},
+            {"status": "erro", "mensagem": str(e)},
             status=500
         )
