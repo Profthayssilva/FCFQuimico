@@ -104,7 +104,6 @@ def enviar_contato(request):
 
 @require_POST
 def enviar_fds_form(request):
-
     try:
         nome = request.POST.get("nome")
         email_usuario = request.POST.get("email")
@@ -118,25 +117,34 @@ def enviar_fds_form(request):
                 status=400
             )
 
+        if not produtos_selecionados:
+            return JsonResponse(
+                {"status": "erro", "mensagem": "Selecione ao menos um produto"},
+                status=400
+            )
+
         anexos = []
 
         for url in produtos_selecionados:
             nome_arquivo = os.path.basename(url)
 
-            caminho_pdf = (
-                settings.BASE_DIR
-                / "core"
-                / "static"
-                / "core"
-                / "fds"
-                / nome_arquivo
+            # ✅ SOLUÇÃO: Tentar STATIC_ROOT primeiro (produção), depois fonte (dev)
+            caminho_producao = settings.STATIC_ROOT / "core" / "fds" / nome_arquivo
+            caminho_dev = settings.BASE_DIR / "core" / "static" / "core" / "fds" / nome_arquivo
+
+            if caminho_producao.exists():
+                anexos.append(str(caminho_producao))
+            elif caminho_dev.exists():
+                anexos.append(str(caminho_dev))
+            # Se não existir em nenhum, ignora silenciosamente
+
+        if not anexos:
+            return JsonResponse(
+                {"status": "erro", "mensagem": "Nenhum arquivo PDF encontrado"},
+                status=404
             )
 
-            if caminho_pdf.exists():
-                anexos.append(str(caminho_pdf))
-
         # ================= EMAIL PARA CLIENTE =================
-
         html_user = f"""
         <div style="font-family: Arial;">
             <h2>Fichas de Segurança (FDS)</h2>
@@ -152,7 +160,6 @@ def enviar_fds_form(request):
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[email_usuario],
         )
-
         email_usuario_envio.content_subtype = "html"
 
         for pdf in anexos:
@@ -161,7 +168,6 @@ def enviar_fds_form(request):
         email_usuario_envio.send(fail_silently=False)
 
         # ================= EMAIL PARA EMPRESA =================
-
         html_empresa = f"""
         <div style="font-family: Arial;">
             <h2>Nova Solicitação de FDS</h2>
@@ -169,6 +175,7 @@ def enviar_fds_form(request):
             <p><strong>Email:</strong> {email_usuario}</p>
             <p><strong>Empresa:</strong> {empresa}</p>
             <p><strong>Telefone:</strong> {telefone}</p>
+            <p><strong>Produtos:</strong> {len(anexos)} arquivo(s)</p>
         </div>
         """
 
@@ -179,13 +186,14 @@ def enviar_fds_form(request):
             to=["contatofcfquimicos@gmail.com"],
             reply_to=[email_usuario],
         )
-
         email_empresa.content_subtype = "html"
         email_empresa.send(fail_silently=False)
 
         return JsonResponse({"status": "ok"})
 
     except Exception as e:
+        import traceback
+        print(f"ERRO FDS: {traceback.format_exc()}")  # Log para debug no Render
         return JsonResponse(
             {"status": "erro", "mensagem": str(e)},
             status=500
