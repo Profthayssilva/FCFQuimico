@@ -6,18 +6,18 @@ Production-ready configuration for Render
 from pathlib import Path
 import os
 
-# ============================
+# ==================================================
 # BASE
-# ============================
+# ==================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# ============================
+# ==================================================
 # SEGURANÇA
-# ============================
+# ==================================================
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
-    "django-insecure-hcg&z$!gjh^=^t73z_@61qc1)7vwerif6#_37*%ei@3j*o1e+t"
+    "django-insecure-change-this-in-production"
 )
 
 DEBUG = False
@@ -27,10 +27,20 @@ ALLOWED_HOSTS = [
     ".onrender.com",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://fcfquimicos.onrender.com",
+]
 
-# ============================
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
+# ==================================================
 # APLICAÇÕES
-# ============================
+# ==================================================
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,15 +52,12 @@ INSTALLED_APPS = [
 ]
 
 
-# ============================
+# ==================================================
 # MIDDLEWARE
-# ============================
+# ==================================================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    # 🔹 necessário para static no Render
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,16 +67,16 @@ MIDDLEWARE = [
 ]
 
 
-# ============================
+# ==================================================
 # URL / WSGI
-# ============================
+# ==================================================
 ROOT_URLCONF = 'FCF.urls'
 WSGI_APPLICATION = 'FCF.wsgi.application'
 
 
-# ============================
+# ==================================================
 # TEMPLATES
-# ============================
+# ==================================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -86,9 +93,9 @@ TEMPLATES = [
 ]
 
 
-# ============================
+# ==================================================
 # BANCO DE DADOS
-# ============================
+# ==================================================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -97,18 +104,18 @@ DATABASES = {
 }
 
 
-# ============================
+# ==================================================
 # INTERNACIONALIZAÇÃO
-# ============================
+# ==================================================
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
 
-# ============================
-# ARQUIVOS ESTÁTICOS (CRÍTICO)
-# ============================
+# ==================================================
+# ARQUIVOS ESTÁTICOS
+# ==================================================
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -117,32 +124,33 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# 🔹 Whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-# ============================
+# ==================================================
 # MEDIA
-# ============================
+# ==================================================
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# ============================
+# ==================================================
 # PADRÃO
-# ============================
+# ==================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# ============================
-# EMAIL (GMAIL)
-# ============================
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
+# ==================================================
+# EMAIL - LOCAWEB SMTP
+# ==================================================
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.locaweb.com.br")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = "contatofcfquimicos@gmail.com"
-EMAIL_HOST_PASSWORD = "soof nyiu vlph hlfw"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
