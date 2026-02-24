@@ -17,7 +17,7 @@ def teste_email(request):
             subject='Teste Render',
             message='Email funcionando!',
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['contatofcfquimicos@gmail.com'],
+            recipient_list=['contato@r1k2quimicos.com.br'],
             fail_silently=False,
         )
         return HttpResponse("Email enviado com sucesso!")
@@ -81,7 +81,7 @@ def enviar_contato(request):
             subject="Nova mensagem no site - FCF Químicos",
             body=html_empresa,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=["contatofcfquimicos@gmail.com"],
+            to=["contato@r1k2quimicos.com.br"],
             reply_to=[email_usuario] if email_usuario else [],
         )
 
@@ -183,7 +183,7 @@ def enviar_fds_form(request):
             subject="Nova Solicitação de FDS - FCF Químicos",
             body=html_empresa,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=["contatofcfquimicos@gmail.com"],
+            to=["contato@r1k2quimicos.com.br"],
             reply_to=[email_usuario],
         )
         email_empresa.content_subtype = "html"
