@@ -61,19 +61,15 @@ def enviar_contato(request):
     try:
         html_empresa = f"""
         <div style="font-family: Arial, sans-serif; padding: 20px;">
-            <h2 style="color:#004D7A;">Nova mensagem recebida pelo site</h2>
+            <h2>Nova mensagem recebida pelo site</h2>
 
             <p><strong>Nome:</strong> {nome}</p>
             <p><strong>Email:</strong> {email_usuario}</p>
             <p><strong>Empresa:</strong> {empresa}</p>
             <p><strong>Telefone:</strong> {telefone}</p>
 
-            <h3 style="color:#004D7A; margin-top:20px;">Mensagem:</h3>
-            <p style="white-space: pre-line; color:#333;">{mensagem}</p>
-
-            <p style="margin-top:30px; font-size:12px; color:#777;">
-                Este e-mail foi enviado automaticamente pelo formulário do site FCF Químicos.
-            </p>
+            <h3>Mensagem:</h3>
+            <p>{mensagem}</p>
         </div>
         """
 
@@ -99,7 +95,7 @@ def enviar_contato(request):
 
 
 # =====================================
-# FORMULÁRIO DE ENVIO DE FDS
+# FORMULÁRIO DE ENVIO DE FDS (VERSÃO ESTÁVEL)
 # =====================================
 
 @require_POST
@@ -107,8 +103,6 @@ def enviar_fds_form(request):
     try:
         nome = request.POST.get("nome")
         email_usuario = request.POST.get("email")
-        empresa = request.POST.get("empresa")
-        telefone = request.POST.get("telefone")
         produtos_selecionados = request.POST.getlist("produtos")
 
         if not email_usuario:
@@ -123,77 +117,36 @@ def enviar_fds_form(request):
                 status=400
             )
 
-        anexos = []
+        dominio = request.build_absolute_uri('/')[:-1]
+
+        links = ""
 
         for url in produtos_selecionados:
             nome_arquivo = os.path.basename(url)
+            link_pdf = f"{dominio}/static/core/fds/{nome_arquivo}"
+            links += f"\n{link_pdf}"
 
-            # ✅ SOLUÇÃO: Tentar STATIC_ROOT primeiro (produção), depois fonte (dev)
-            caminho_producao = settings.STATIC_ROOT / "core" / "fds" / nome_arquivo
-            caminho_dev = settings.BASE_DIR / "core" / "static" / "core" / "fds" / nome_arquivo
+        mensagem = f"""
+Olá {nome},
 
-            if caminho_producao.exists():
-                anexos.append(str(caminho_producao))
-            elif caminho_dev.exists():
-                anexos.append(str(caminho_dev))
-            # Se não existir em nenhum, ignora silenciosamente
+Segue abaixo os links para download das Fichas de Segurança (FDS):
 
-        if not anexos:
-            return JsonResponse(
-                {"status": "erro", "mensagem": "Nenhum arquivo PDF encontrado"},
-                status=404
-            )
+{links}
 
-        # ================= EMAIL PARA CLIENTE =================
-        html_user = f"""
-        <div style="font-family: Arial;">
-            <h2>Fichas de Segurança (FDS)</h2>
-            <p>Olá {nome},</p>
-            <p>Segue em anexo as FDS solicitadas.</p>
-            <p>Equipe FCF Químicos</p>
-        </div>
+Equipe FCF Químicos
         """
 
-        email_usuario_envio = EmailMessage(
+        send_mail(
             subject="Fichas de Segurança (FDS) - FCF Químicos",
-            body=html_user,
+            message=mensagem,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[email_usuario],
+            recipient_list=[email_usuario],
+            fail_silently=False,
         )
-        email_usuario_envio.content_subtype = "html"
-
-        for pdf in anexos:
-            email_usuario_envio.attach_file(pdf)
-
-        email_usuario_envio.send(fail_silently=False)
-
-        # ================= EMAIL PARA EMPRESA =================
-        html_empresa = f"""
-        <div style="font-family: Arial;">
-            <h2>Nova Solicitação de FDS</h2>
-            <p><strong>Nome:</strong> {nome}</p>
-            <p><strong>Email:</strong> {email_usuario}</p>
-            <p><strong>Empresa:</strong> {empresa}</p>
-            <p><strong>Telefone:</strong> {telefone}</p>
-            <p><strong>Produtos:</strong> {len(anexos)} arquivo(s)</p>
-        </div>
-        """
-
-        email_empresa = EmailMessage(
-            subject="Nova Solicitação de FDS - FCF Químicos",
-            body=html_empresa,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=["contato@r1k2quimicos.com.br"],
-            reply_to=[email_usuario],
-        )
-        email_empresa.content_subtype = "html"
-        email_empresa.send(fail_silently=False)
 
         return JsonResponse({"status": "ok"})
 
     except Exception as e:
-        import traceback
-        print(f"ERRO FDS: {traceback.format_exc()}")  # Log para debug no Render
         return JsonResponse(
             {"status": "erro", "mensagem": str(e)},
             status=500
