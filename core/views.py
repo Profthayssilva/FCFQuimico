@@ -103,6 +103,8 @@ def enviar_fds_form(request):
     try:
         nome = request.POST.get("nome")
         email_usuario = request.POST.get("email")
+        empresa = request.POST.get("empresa")
+        telefone = request.POST.get("telefone")
         produtos_selecionados = request.POST.getlist("produtos")
 
         if not email_usuario:
@@ -120,13 +122,13 @@ def enviar_fds_form(request):
         dominio = request.build_absolute_uri('/')[:-1]
 
         links = ""
-
         for url in produtos_selecionados:
             nome_arquivo = os.path.basename(url)
             link_pdf = f"{dominio}/static/core/fds/{nome_arquivo}"
             links += f"\n{link_pdf}"
 
-        mensagem = f"""
+        # EMAIL PARA CLIENTE
+        mensagem_cliente = f"""
 Olá {nome},
 
 Segue abaixo os links para download das Fichas de Segurança (FDS):
@@ -136,13 +138,45 @@ Segue abaixo os links para download das Fichas de Segurança (FDS):
 Equipe FCF Químicos
         """
 
-        send_mail(
+        # EMAIL PARA EMPRESA
+        mensagem_empresa = f"""
+Nova solicitação de FDS:
+
+Nome: {nome}
+Email: {email_usuario}
+Empresa: {empresa}
+Telefone: {telefone}
+
+Produtos solicitados:
+{links}
+        """
+
+        from django.core import mail
+
+        connection = mail.get_connection()
+        connection.open()
+
+        email_cliente = mail.EmailMessage(
             subject="Fichas de Segurança (FDS) - FCF Químicos",
-            message=mensagem,
+            body=mensagem_cliente,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[email_usuario],
-            fail_silently=False,
+            to=[email_usuario],
+            connection=connection,
         )
+
+        email_empresa = mail.EmailMessage(
+            subject="Nova Solicitação de FDS - FCF Químicos",
+            body=mensagem_empresa,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=["contato@r1k2quimicos.com.br"],
+            reply_to=[email_usuario],
+            connection=connection,
+        )
+
+        email_cliente.send()
+        email_empresa.send()
+
+        connection.close()
 
         return JsonResponse({"status": "ok"})
 
