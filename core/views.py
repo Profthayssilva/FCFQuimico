@@ -1,10 +1,31 @@
 import os
+import resend
 
 from django.conf import settings
-from django.core.mail import EmailMessage, send_mail
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
+
+
+# =====================================
+# CONFIGURAÇÃO RESEND
+# =====================================
+
+resend.api_key = settings.RESEND_API_KEY
+
+
+def enviar_email_resend(subject, html, to_emails, reply_to=None):
+    payload = {
+        "from": settings.DEFAULT_FROM_EMAIL,
+        "to": to_emails,
+        "subject": subject,
+        "html": html,
+    }
+
+    if reply_to:
+        payload["reply_to"] = reply_to
+
+    return resend.Emails.send(payload)
 
 
 # =====================================
@@ -13,12 +34,15 @@ from django.views.decorators.http import require_POST
 
 def teste_email(request):
     try:
-        send_mail(
-            subject='Teste Render',
-            message='Email funcionando!',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['contato@r1k2quimicos.com.br'],
-            fail_silently=False,
+        enviar_email_resend(
+            subject="Teste Render",
+            html="""
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2>Email funcionando com Resend!</h2>
+                    <p>Esse é um teste de envio do site FCF Químicos.</p>
+                </div>
+            """,
+            to_emails=["contato@r1k2quimicos.com.br"],
         )
         return HttpResponse("Email enviado com sucesso!")
     except Exception as e:
@@ -30,19 +54,19 @@ def teste_email(request):
 # =====================================
 
 def index(request):
-    return render(request, 'core/index.html')
+    return render(request, "core/index.html")
 
 
 def sobre(request):
-    return render(request, 'core/sobre.html')
+    return render(request, "core/sobre.html")
 
 
 def produtos(request):
-    return render(request, 'core/produtos.html')
+    return render(request, "core/produtos.html")
 
 
 def contato(request):
-    return render(request, 'core/contato.html')
+    return render(request, "core/contato.html")
 
 
 # =====================================
@@ -51,12 +75,11 @@ def contato(request):
 
 @require_POST
 def enviar_contato(request):
-
-    nome = request.POST.get("nome")
-    email_usuario = request.POST.get("email")
-    empresa = request.POST.get("empresa")
-    telefone = request.POST.get("telefone")
-    mensagem = request.POST.get("mensagem")
+    nome = request.POST.get("nome", "").strip()
+    email_usuario = request.POST.get("email", "").strip()
+    empresa = request.POST.get("empresa", "").strip()
+    telefone = request.POST.get("telefone", "").strip()
+    mensagem = request.POST.get("mensagem", "").strip()
 
     try:
         html_empresa = f"""
@@ -73,16 +96,12 @@ def enviar_contato(request):
         </div>
         """
 
-        email_empresa = EmailMessage(
+        enviar_email_resend(
             subject="Nova mensagem no site - FCF Químicos",
-            body=html_empresa,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=["contato@r1k2quimicos.com.br"],
-            reply_to=[email_usuario] if email_usuario else [],
+            html=html_empresa,
+            to_emails=["contato@r1k2quimicos.com.br"],
+            reply_to=email_usuario if email_usuario else None,
         )
-
-        email_empresa.content_subtype = "html"
-        email_empresa.send(fail_silently=False)
 
         return render(request, "core/contato.html", {"sucesso": True})
 
@@ -95,16 +114,16 @@ def enviar_contato(request):
 
 
 # =====================================
-# FORMULÁRIO DE ENVIO DE FDS (VERSÃO ESTÁVEL)
+# FORMULÁRIO DE ENVIO DE FDS
 # =====================================
 
 @require_POST
 def enviar_fds_form(request):
     try:
-        nome = request.POST.get("nome")
-        email_usuario = request.POST.get("email")
-        empresa = request.POST.get("empresa")
-        telefone = request.POST.get("telefone")
+        nome = request.POST.get("nome", "").strip()
+        email_usuario = request.POST.get("email", "").strip()
+        empresa = request.POST.get("empresa", "").strip()
+        telefone = request.POST.get("telefone", "").strip()
         produtos_selecionados = request.POST.getlist("produtos")
 
         if not email_usuario:
@@ -119,64 +138,56 @@ def enviar_fds_form(request):
                 status=400
             )
 
-        dominio = request.build_absolute_uri('/')[:-1]
+        dominio = request.build_absolute_uri("/")[:-1]
 
-        links = ""
+        links_html = ""
+        links_texto = ""
+
         for url in produtos_selecionados:
             nome_arquivo = os.path.basename(url)
             link_pdf = f"{dominio}/static/core/fds/{nome_arquivo}"
-            links += f"\n{link_pdf}"
+            links_html += f'<li><a href="{link_pdf}" target="_blank">{nome_arquivo}</a></li>'
+            links_texto += f"{link_pdf}\n"
 
-        # EMAIL PARA CLIENTE
-        mensagem_cliente = f"""
-Olá {nome},
+        html_cliente = f"""
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+            <h2>Olá, {nome}!</h2>
+            <p>Segue abaixo os links para download das Fichas de Segurança (FDS):</p>
 
-Segue abaixo os links para download das Fichas de Segurança (FDS):
+            <ul>
+                {links_html}
+            </ul>
 
-{links}
-
-Equipe FCF Químicos
+            <p>Equipe FCF Químicos</p>
+        </div>
         """
 
-        # EMAIL PARA EMPRESA
-        mensagem_empresa = f"""
-Nova solicitação de FDS:
+        html_empresa = f"""
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+            <h2>Nova solicitação de FDS</h2>
 
-Nome: {nome}
-Email: {email_usuario}
-Empresa: {empresa}
-Telefone: {telefone}
+            <p><strong>Nome:</strong> {nome}</p>
+            <p><strong>Email:</strong> {email_usuario}</p>
+            <p><strong>Empresa:</strong> {empresa}</p>
+            <p><strong>Telefone:</strong> {telefone}</p>
 
-Produtos solicitados:
-{links}
+            <h3>Produtos solicitados:</h3>
+            <pre style="white-space: pre-wrap; font-family: Arial, sans-serif;">{links_texto}</pre>
+        </div>
         """
 
-        from django.core import mail
-
-        connection = mail.get_connection()
-        connection.open()
-
-        email_cliente = mail.EmailMessage(
+        enviar_email_resend(
             subject="Fichas de Segurança (FDS) - FCF Químicos",
-            body=mensagem_cliente,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[email_usuario],
-            connection=connection,
+            html=html_cliente,
+            to_emails=[email_usuario],
         )
 
-        email_empresa = mail.EmailMessage(
+        enviar_email_resend(
             subject="Nova Solicitação de FDS - FCF Químicos",
-            body=mensagem_empresa,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=["contato@r1k2quimicos.com.br"],
-            reply_to=[email_usuario],
-            connection=connection,
+            html=html_empresa,
+            to_emails=["contato@r1k2quimicos.com.br"],
+            reply_to=email_usuario,
         )
-
-        email_cliente.send()
-        email_empresa.send()
-
-        connection.close()
 
         return JsonResponse({"status": "ok"})
 
