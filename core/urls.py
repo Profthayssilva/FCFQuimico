@@ -12,6 +12,9 @@ urlpatterns = [
     # Página de contato
     path('contato/', views.contato, name='contato'),
 
-    # Envio do formulário de contato (precisa desta rota!)
+    # Envio do formulário de contato
     path('enviar-contato/', views.enviar_contato, name='enviar_contato'),
+
+    # Teste de email
+    path('teste_email/', views.teste_email, name='teste_email'),
 ]
