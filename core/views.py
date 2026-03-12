@@ -68,7 +68,8 @@ def produtos(request):
 def contato(request):
     return render(request, "core/contato.html")
 
-
+def qualidade(request):
+    return render(request, "core/qualidade.html")
 # =====================================
 # FORMULÁRIO DE CONTATO
 # =====================================
