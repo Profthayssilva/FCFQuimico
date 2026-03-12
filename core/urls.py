@@ -11,6 +11,9 @@ urlpatterns = [
 
     # Página de contato
     path('contato/', views.contato, name='contato'),
+    
+    # Página de qualidade
+    path('qualidade/', views.qualidade, name='qualidade'),
 
     # Envio do formulário de contato
     path('enviar-contato/', views.enviar_contato, name='enviar_contato'),
