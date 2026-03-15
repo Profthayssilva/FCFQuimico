@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('sobre/', views.sobre, name='sobre'),
     path('produtos/', views.produtos, name='produtos'),
+    path('prestacao-de-servicos/', views.prestacaodeservicos, name='prestacaodeservicos'),
 
     # Formulário de FDS
     path('enviar-fds-form/', views.enviar_fds_form, name='enviar_fds_form'),

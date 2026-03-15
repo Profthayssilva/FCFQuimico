@@ -70,6 +70,9 @@ def contato(request):
 
 def qualidade(request):
     return render(request, "core/qualidade.html")
+
+def qualidade(request):
+    return render(request, "core/prestacaodeservicos.html")
 # =====================================
 # FORMULÁRIO DE CONTATO
 # =====================================
