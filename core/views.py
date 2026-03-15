@@ -154,7 +154,7 @@ def enviar_fds_form(request):
             links_texto += f"{link_pdf}\n"
 
         html_cliente = f"""
-<div style="font-family: Arial, sans-serif; padding: 20px; color:#333;">
+<div style="font-family: Arial, sans-serif; padding: 20px; color:#333; line-height:1.6; text-align:left;">
 
 <h2 style="color:#0b5fa6;">Olá, {nome}!</h2>
 
@@ -164,11 +164,11 @@ def enviar_fds_form(request):
 
 <p>
 Encaminhamos abaixo os links para download das <strong>Fichas de Segurança (FDS)</strong> solicitadas.
-Nelas você poderá conhecer melhor nossa <strong>linha de produtos e soluções</strong>,
-desenvolvidas com foco em <strong>qualidade, eficiência e responsabilidade ambiental</strong>.
+Nelas você poderá conhecer melhor nossa <strong>linha de produtos e soluções</strong>, desenvolvidas
+com foco em <strong>qualidade, eficiência e responsabilidade ambiental</strong>.
 </p>
 
-<ul style="margin-top:15px; margin-bottom:20px;">
+<ul style="margin-top:15px; margin-bottom:20px; padding-left:20px;">
 {links_html}
 </ul>
 
@@ -179,8 +179,8 @@ garantindo os melhores resultados em suas operações.
 </p>
 
 <p>
-Ficaremos muito felizes em <strong>entender melhor a sua necessidade</strong> e apresentar as
-<strong>soluções mais adequadas para o seu negócio</strong>. Caso tenha interesse,
+Ficaremos muito felizes em <strong>entender melhor a sua necessidade</strong> e apresentar
+as <strong>soluções mais adequadas para o seu negócio</strong>. Caso tenha interesse,
 também podemos disponibilizar <strong>amostras para avaliação</strong>.
 </p>
 
