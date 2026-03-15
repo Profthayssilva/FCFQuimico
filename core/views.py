@@ -71,7 +71,7 @@ def contato(request):
 def qualidade(request):
     return render(request, "core/qualidade.html")
 
-def qualidade(request):
+def prestacaodeservicos(request):
     return render(request, "core/prestacaodeservicos.html")
 # =====================================
 # FORMULÁRIO DE CONTATO
@@ -154,17 +154,53 @@ def enviar_fds_form(request):
             links_texto += f"{link_pdf}\n"
 
         html_cliente = f"""
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-            <h2>Olá, {nome}!</h2>
-            <p>Segue abaixo os links para download das Fichas de Segurança (FDS):</p>
+<div style="font-family: Arial, sans-serif; padding: 20px; color:#333;">
 
-            <ul>
-                {links_html}
-            </ul>
+<h2 style="color:#0b5fa6;">Olá, {nome}!</h2>
 
-            <p>Equipe FCF Químicos</p>
-        </div>
-        """
+<p>
+É um prazer para nós atendê-lo.
+</p>
+
+<p>
+Encaminhamos abaixo os links para download das <strong>Fichas de Segurança (FDS)</strong> solicitadas.
+Nelas você poderá conhecer melhor nossa <strong>linha de produtos e soluções</strong>,
+desenvolvidas com foco em <strong>qualidade, eficiência e responsabilidade ambiental</strong>.
+</p>
+
+<ul style="margin-top:15px; margin-bottom:20px;">
+{links_html}
+</ul>
+
+<p>
+Nosso compromisso é oferecer produtos que <strong>agreguem valor aos nossos clientes</strong>,
+com <strong>alto padrão de qualidade</strong> e <strong>suporte técnico especializado</strong>,
+garantindo os melhores resultados em suas operações.
+</p>
+
+<p>
+Ficaremos muito felizes em <strong>entender melhor a sua necessidade</strong> e apresentar as
+<strong>soluções mais adequadas para o seu negócio</strong>. Caso tenha interesse,
+também podemos disponibilizar <strong>amostras para avaliação</strong>.
+</p>
+
+<p>
+Estamos à disposição para qualquer esclarecimento.
+</p>
+
+<br>
+
+<p>
+<strong>Atenciosamente,</strong>
+</p>
+
+<p style="margin-top:5px;">
+<strong>Equipe FCF Químicos</strong><br>
+Qualidade, inovação e compromisso com resultados.
+</p>
+
+</div>
+"""
 
         html_empresa = f"""
         <div style="font-family: Arial, sans-serif; padding: 20px;">
