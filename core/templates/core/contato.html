@@ -17,69 +17,163 @@
     </div>
 
     <div class="overlay-glass">
-        <h1>Contato</h1>
-        <p>Entre em contato conosco — será um prazer atendê-lo.</p>
+        <h1>Fale Conosco e Solicite sua Cotação</h1>
+
+        <p>
+                    Estamos prontos para entender sua necessidade e oferecer a melhor solução
+                    com <strong>qualidade, agilidade e confiança</strong>.
+        </p>
     </div>
 
     <div class="banner-gradient"></div>
 </section>
 
 <!-- ===============================
-     FORMULÁRIO DE CONTATO
+     SEÇÃO CONTATO
 =============================== -->
-<section class="formulario-contato">
-    <div class="container">
-        <h2>Preencha o formulário de contato</h2>
-        <p>Por favor, preencha os campos abaixo e nossa equipe entrará em contato o mais breve possível.</p>
+<section class="contato-section">
 
-        <!-- ✅ FORM CORRIGIDO -->
-        <form
-            class="form-contato"
-            method="POST"
-            action="{% url 'enviar_contato' %}"
-        >
-            {% csrf_token %}
+<div class="container">
 
-            <div class="linha">
-                <input type="text" name="nome" placeholder="Nome completo" required>
-                <input type="email" name="email" placeholder="E-mail" required>
-            </div>
+<div class="contato-grid">
 
-            <div class="linha">
-                <input type="text" name="empresa" placeholder="Empresa">
-                <input type="text" name="telefone" placeholder="Telefone">
-            </div>
+<!-- ===============================
+     ESQUERDA - INFORMAÇÕES
+=============================== -->
+<aside class="contato-info">
 
-            <textarea name="mensagem" rows="5" placeholder="Sua mensagem..." required></textarea>
+<h2>Entre em Contato</h2>
 
-            <button type="submit" class="btn-enviar">
-                Enviar Mensagem
-            </button>
-        </form>
-    </div>
+<div class="item">
+<span>📍</span>
+<div>
+<h3>Endereço</h3>
+<p>Rua Montreal, Ayrton Senna</p>
+<p>Anápolis - GO</p>
+</div>
+</div>
 
-    <!-- ===============================
-         DADOS DA EMPRESA
-    =============================== -->
-    <div class="dados-empresa-contato">
+<div class="item">
+<span>📞</span>
+<div>
+<h3>Telefone / WhatsApp</h3>
+<p>(62) 99439-0098</p>
 
-        <img
-            src="{% static 'core/img/LogoContato.png' %}"
-            alt="FCF Químicos"
-            class="logo-contato"
-        >
+<a href="https://wa.me/5562994390098" target="_blank" class="btn-whatsapp">
+Falar no WhatsApp
+</a>
 
-        <div class="linha-vertical"></div>
+</div>
+</div>
 
-        <div class="info-contato">
-            <h3>FCF Químicos & Soluções Logística Ltda</h3>
-            <p>CNPJ: 32.291.232/0001-32</p>
-            <p>Rua Montreal - Residencial Ayrton Senna</p>
-            <p>Anápolis - GO • CEP 75.097-123</p>
-            <p>Telefone: (62) 9 9439-0098</p>
-        </div>
+<div class="item">
+<span>✉️</span>
+<div>
+<h3>E-mail</h3>
+<p>comercial.go@r1k2quimicos.com</p>
+</div>
+</div>
 
-    </div>
+<div class="item">
+<span>🕒</span>
+<div>
+<h3>Horário</h3>
+<p>Segunda a sexta</p>
+<p>08:30 às 18:00</p>
+</div>
+</div>
+
+</aside>
+
+
+<!-- ===============================
+     DIREITA - FORMULÁRIO
+=============================== -->
+<div class="contato-form">
+
+<div class="topo-form">
+<h2>Solicite sua Cotação ou Tire suas Dúvidas</h2>
+</div>
+
+<form method="POST" action="{% url 'enviar_contato' %}" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<div class="campo">
+<label>Nome Completo *</label>
+<input type="text" name="nome" required>
+</div>
+
+<div class="campo">
+<label>Empresa</label>
+<input type="text" name="empresa">
+</div>
+
+<div class="campo">
+<label>Telefone *</label>
+<input type="text" name="telefone" required>
+</div>
+
+<div class="campo">
+<label>E-mail *</label>
+<input type="email" name="email" required>
+</div>
+
+<div class="campo">
+<label>Tipo de Serviço *</label>
+<select name="tipo_servico" required>
+<option value="">Selecione</option>
+<option>Tratamento de Água (ETA)</option>
+<option>Tratamento de Efluentes</option>
+<option>Produtos Químicos</option>
+<option>Serviços Ambientais</option>
+<option>Outros</option>
+</select>
+</div>
+
+<div class="campo">
+<label>Mensagem</label>
+<textarea name="mensagem"></textarea>
+</div>
+
+<div class="campo">
+<label>Anexar arquivo</label>
+<input type="file" name="arquivo">
+</div>
+
+<button type="submit" class="btn-enviar">
+SOLICITAR COTAÇÃO
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ===============================
+     DIFERENCIAIS
+=============================== -->
+<section class="diferenciais">
+
+<div class="container">
+
+<div class="grid-diferenciais">
+
+<div>✔ Atendimento Rápido</div>
+<div>🧩 Soluções Personalizadas</div>
+<div>👥 Equipe Especializada</div>
+<div>🌱 Compromisso Ambiental</div>
+
+</div>
+
+</div>
+
 </section>
 
 {% endblock %}
