@@ -24,13 +24,16 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     "fcfquimicos.onrender.com",
+    "r1k2quimicos.com.br",
+    "www.r1k2quimicos.com.br",
     ".onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://fcfquimicos.onrender.com",
+    "https://r1k2quimicos.com.br",
+    "https://www.r1k2quimicos.com.br",
 ]
-
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 SECURE_SSL_REDIRECT = True
