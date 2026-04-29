@@ -23,12 +23,12 @@ SECRET_KEY = os.environ.get(
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
-    "fcfquimicos-0506.onrender.com",
+    "fcfquimicos.onrender.com",
     ".onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://fcfquimicos-0506.onrender.com",
+    "https://fcfquimicos.onrender.com",
 ]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
